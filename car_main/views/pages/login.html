@@ -1,0 +1,57 @@
+<div>
+    <button class="btn btn-lg navbar-default" ng-click="back();"
+            style="float: right; margin: 10px; font-size: 16px; color: #777777;">返回
+    </button>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="login-panel panel panel-default" style="border-top: none; margin-top: 20%;">
+                <!-- Nav tabs -->
+                <tabset type="pills" style="height: 40%;">
+                    <tab heading="用户登录" class="tab-font tab-width">
+                        <div class="panel-body">
+                            <form role="form">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <input id="userId" class="form-control" placeholder="登录名" name="userId"
+                                               type="text">
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="userPwd" class="form-control" placeholder="请输入密码" name="password"
+                                               type="password">
+                                    </div>
+                                    <!-- Change this to a button or input when using this as a form -->
+                                    <div class="tab-font">
+                                        <button class="btn btn-primary" ng-click="userSubmit();">登录</button>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </tab>
+                    <tab heading="系统管理员登录" class="tab-font tab-width">
+                        <div class="panel-body">
+                            <form role="form">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <input id="adminName" class="form-control" placeholder="登录名" name="adminName"
+                                               type="text" autofocus>
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="adminPwd" class="form-control" placeholder="请输入密码" name="adminPwd"
+                                               type="password">
+                                    </div>
+                                    <!-- Change this to a button or input when using this as a form -->
+                                    <div class="tab-font">
+                                        <button class="btn btn-primary" ng-click="adminSubmit();">管理员登录</button>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </tab>
+                </tabset>
+            </div>
+            <!-- /.panel -->
+        </div>
+    </div>
+</div>

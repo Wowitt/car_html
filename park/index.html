@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta content="width=device-width,initial-scale=1" name="viewport">
+        <title>停车场信息</title>
+        <style>
+            html,body{
+                margin:10px;
+                padding:0px;
+            }
+
+            div h1,div h2{
+                display:block;
+                float:left;
+                width:42px;
+                height:20px;
+                line-height:20px;
+                font-size:9px;
+                color:#FFFFFF;
+                text-align:center;
+            }
+
+            .sit_busy{
+                width:42px;
+                height:66px;
+                float:left;
+                background: url(sitbusy.png) no-repeat;
+                background-size:contain;
+            }
+            .sit_normal{
+                width:42px;
+                height:66px;
+                float:left;
+                background: url(sitnormal.png) no-repeat;
+                background-size:contain;
+            }
+        </style>
+	</head>
+	<body>
+		<div id="app">
+            
+		</div>
+	</body>
+</html>
+<script>
+;(function(window,undefined){
+    var appNode = document.getElementById('app');
+    var htmlstr = ""
+    for(var i = 1 ; i <= 15 ; i++){
+        htmlstr += '<div style="display:flex;">'
+        for(var j = 1 ; j <= 40 ; j++){
+            if(Math.floor(Math.random(1)*10)){
+                htmlstr += '<div id="sit'+i+'_'+j+'" class="sit_normal" title="" >';
+                htmlstr += '<h1>'+i+'</h1>';
+                htmlstr += '<h2>'+j+'</h2>';
+                htmlstr += '</div>'
+            }
+            else{
+                htmlstr += '<div id="sit'+i+'_'+j+'" class="sit_busy" title="津xxxxx&#13停放日期:yyyy-MM-dd hh:mm:ss&#13车位'+i+'_'+j+'" >';
+                htmlstr += '<h1></h1>';
+                htmlstr += '<h2></h2>';
+                htmlstr += '</div>'
+            }
+        }
+        htmlstr += '</div>'
+    }
+    appNode.innerHTML = htmlstr
+})(window);
+</script>
+
+

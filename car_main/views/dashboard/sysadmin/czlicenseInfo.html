@@ -1,0 +1,38 @@
+<div>
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">处置单位许可证维护</h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+
+    <!-- /.panel -->
+    <div class="row " ng-model="epInfo">
+        <div class="col-lg-3">
+            <div class="form-group" ng-show="showFlag">
+                <label style="height: 29px;padding: 6px 12px;">单位编号</label>
+                <input id="epId" class="form-control" placeholder="" name="epId" type="text" ng-model="epId">
+            </div>
+            <div class="form-group" ng-show="showFlag">
+                <label style="height: 29px;padding: 6px 12px;">单位名称</label>
+                <input id="epName" class="form-control" placeholder="" name="epName" type="text" ng-model="epName">
+            </div>
+            <div class="form-group" >
+                <label style="height: 29px;padding: 6px 12px;">许可证号</label>
+                <input id="licenseNo" class="form-control" placeholder="" name="licenseNo" type="text" ng-model="licenseNo">
+            </div>
+        </div>
+        <!-- /.col-lg-8 -->
+    </div>
+    <!-- /.row -->
+    <br/><br/><br/><br/>
+    <div class="row">
+        <div class="col-lg-3">
+            <button class="btn btn-default" ng-click="back();" id="backBtn">返回</button>
+            <button class="btn btn-primary" ng-click="save();" id="saveBtn">保存</button>
+            <button class="btn btn-primary" ng-click="delete();" id="delBtn" ng-show="delFlag">删除</button>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+</div>

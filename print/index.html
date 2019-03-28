@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta content="width=device-width,initial-scale=1" name="viewport">
+        <title>维修单打印</title>
+        <style>
+            html {
+                height: 100%
+                font-family: sans-serif;
+                -ms-text-size-adjust: 100%;
+                -webkit-text-size-adjust: 100%;
+            }
+
+            body {
+                margin:0;
+                margin-left:10px;
+                margin-right:50px;
+                min-height: 100%;
+                font-family: Arial,sans-serif;
+                color:#333;
+                font-size: 14px;
+                line-height: 20px;
+            }
+
+            table{
+                border: 1px solid #000;
+                border-collapse:collapse;
+                font-size:12px;
+                text-align:center;
+                margin: 0 auto;
+                width: 100%;
+            }
+            td{
+                border: 1px solid #000000;
+                height:30px;
+            }
+            th{
+                border: 1px solid #000000;
+                height:30px;
+                background-color:gray;
+            }
+        </style>
+	</head>
+	<body>
+		<div id="app">
+            <div style="margin-top:20px;font-size:15px;">恒天新能源北辰店(施工单)</div>
+            <div style="display:flex;justify-content: space-between;">
+                <div>
+                    <div style="margin-top:20px;" id="plateNum">车牌照号:xxx</div>
+                    <div style="margin-top:5px;" id = "engineNumber">发动机号:xxx</div>
+                    <div style="margin-top:5px;" id="statusname">状态:xxx</div>
+                    <div style="margin-top:5px;" id="saleUserName">销售:xxx</div>
+                </div>
+                <div style="display:flex;flex-direction: column;justify-content:flex-end;">
+                    <div id="begindate">进场时间:xxx</div>
+                    <div style="margin-top:5px;" id="repairId">工单号:xxx</div>
+                </div>
+            </div>
+            <table id="tableId" border="0" style="margin-top:20px;border:1px #343434 solid;">
+                <tr>
+                    <th>零件名称</th>
+                    <th>类型</th>
+                    <th>条码</th>
+                    <th>单价</th>
+                    <th>单位</th>
+                    <th>数量</th>
+                </tr>
+            </table>
+            <div style="margin-top:10px;display: flex;justify-content: space-around">
+                <div>客户签字:</div>
+                <div>技师签字:</div>
+                <div>服务顾问签字:</div>
+            </div>
+		</div>
+	</body>
+</html>
+<script>
+function getQueryVariable(variable)
+{
+       var query = window.location.search.substring(1);
+       var vars = query.split("&");
+       for (var i=0;i<vars.length;i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == variable){return pair[1];}
+       }
+       return(false);
+}
+;(function(window,undefined){
+    document.getElementById("plateNum").innerText = "牌照号:"+decodeURI(getQueryVariable('plateNum'));
+    document.getElementById("engineNumber").innerText = "发动机号:"+decodeURI(getQueryVariable('engineNumber'));
+    document.getElementById("statusname").innerText = "状态:"+decodeURI(getQueryVariable('statusname'));
+    document.getElementById("saleUserName").innerText = "销售:"+decodeURI(getQueryVariable('saleUserName'));
+    document.getElementById("repairId").innerText = "工单号:"+decodeURI(getQueryVariable('repairId'));
+    document.getElementById("begindate").innerText = "销售:"+getQueryVariable('begindate').replace("%20"," ");
+    var row = 1+parseInt(getQueryVariable('row'))
+    var tableNode = document.getElementById('tableId');
+    var str = ""
+    for(var x=0;x<row;x++){
+        str += "<tr>"
+        if(x ==0){
+            str += "<th>零件名称</th><th>类型</th><th>条码</th><th>单价</th><th>单位</th><th>数量</th>"
+        }
+        else if(x == 1){
+            str += "<td colspan='1'>付款人</td>"
+            str += "<td colspan='2'>"+decodeURI(getQueryVariable('payname'))+"</td>"
+            str += "<td colspan='1'>金额</td>"
+            str += "<td colspan='2'>aaa</td>"
+        }else if(x < row -1){
+            var index = x
+            console.log(index)
+            str += "<td>"+decodeURI(getQueryVariable('cname'+index))+"</td>"
+            str += "<td>"+decodeURI(getQueryVariable('KIND'+index))+"</td>"
+            str += "<td>"+decodeURI(getQueryVariable('BAR_CODE'+index))+"</td>"
+            str += "<td>"+decodeURI(getQueryVariable('SALE_PRICE'+index))+"</td>"
+            str += "<td>"+decodeURI(getQueryVariable('UNIT'+index))+"</td>"
+            str += "<td>"+decodeURI(getQueryVariable('NUM'+index))+"</td>"
+        }else{
+            for(var y=0;y<1;y++){
+                str += "<td colspan='6' style='text-align:left;'>维修描述:"+decodeURI(getQueryVariable('desc'))+"</td>"
+            }
+        }
+        str += "</tr>"
+    }
+    tableNode.innerHTML = str
+})(window);
+</script>
+
+

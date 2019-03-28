@@ -1,0 +1,72 @@
+.tablebg {
+    background-color: lightblue;
+}
+.hideth {
+    display: none;
+}
+.myHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    padding-bottom: 9px;
+    margin: 15px 0 20px;
+    border-bottom: 1px solid #eee;
+}
+.myaction{
+    margin-left: 16px;
+    color:#fff;
+    font-size: 12px;
+    height:30px;
+    width: 72px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    /* border-width: 1px; */
+    /* border-color:#4FC08D; */
+    /* border-style: solid; */
+    background-color: #4FC08D;
+}
+
+.myaction_hover{
+    margin-left: 16px;
+    color:#fff;
+    font-size: 12px;
+    height:30px;
+    width: 72px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    background-color: rgba(79, 192, 141, 0.671);
+}
+
+.myback{
+    margin-left: 16px;
+    color:#4FC08D;
+    font-size: 12px;
+    height:30px;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    border-width: 1px;
+    border-color:#4FC08D;
+    border-style: solid;
+}
+
+.myaction:hover{
+    /* border-width: 1px; 
+    border-color:#4FC08D;
+    border-style: solid; */
+    /* color:#4FC08D; */
+    background-color: rgba(79, 192, 141, 0.671);
+}
+
+.myback:hover{
+    border-width: 0px; 
+    border-style: none;
+    background-color:rgba(79, 192, 141, 0.671);
+    color:#fafafa;
+}

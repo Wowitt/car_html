@@ -1,0 +1,26 @@
+<div>
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">车辆信息excel导入</h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+
+    <!-- /.panel -->
+    <div class="row " ng-model="epInfo">
+        <div class="col-lg-3">
+            <div class="form-group">
+                <input accept=".xlsx,.xls" id="uploadExcel" name="uploadExcel" type="file"/>
+            </div>
+        </div>
+        <!-- /.col-lg-8 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-3">
+            <button class="btn btn-primary" ng-click="uploadExcel();" id="saveBtn">上传</button>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+</div>

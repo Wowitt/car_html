@@ -1,0 +1,89 @@
+<div>
+        <div class="row">
+            <!-- <div class="col-lg-12">
+                <h1 class="page-header">维修单</h1>
+            </div> -->
+            <div class="myHeader">
+                <h1>维修单</h1>
+                <div class="myaction" ng-click="back()">返回</div>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+    
+        <!-- /.panel -->
+        <div class="row" ng-model="repairData">
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>车牌照号</label>
+                    <div class="input-group">
+                        <input class="form-control" placeholder="请输入牌照号" type="text" ng-model="plateNum" >
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" ng-click="queryCarInfo(plateNum)">查询</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label style="width:30%">车牌照号:{{repairData.plateNum}}</label>
+                    <label style="width:30%">状态:{{repairData.statusname}}</label>
+                    <label style="width:30%">销售:{{repairData.saleUserName}}</label>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                    <div class="form-group">
+                        <label>维修描述</label>
+                        <input class="form-control" placeholder="请输入维修概况描述" type="text" ng-model="repairData.RE_DESC" >
+                    </div>
+                </div>
+            <div class="col-lg-12">
+                <div class="dataTable_wrapper">
+                    <label>维修零件</label>
+                    <table class="table table-bordered table-hover" id="detailListTable">
+                        <tr ng-model="carFlag">
+                            <th colspan="8"><a ng-click="detailListAdd();" href="javascript:void(0);">添加</a></th>
+                        </tr>
+                        <tr>
+                            <th>零件名称</th>
+                            <th>类型</th>
+                            <th>条码</th>
+                            <th>单价</th>
+                            <th>单位</th>
+                            <th>库存</th>
+                            <th>数量</th>
+                            <th>操作</th>
+                        </tr>
+                        <tr ng-repeat="x in detailListData">
+                            <!-- <th style="width:30%"><select id="componentNameT{{x.ID}}" class="form-control"><option ng-repeat="c in componentList"  value="{{c}}">{{c.NAME}}</option></select></th> -->
+                            <th style="width:30%"><select ng-model="c"  id="componentNameT{{x.ID}}" ng-change="selectChange(c,x.ID)" ng-options="c as c.NAME for c in componentList" class="form-control" >
+                                    <option value=''>请选择</option>
+                            </select></th>
+                            <th class=""><div id='kindT{{x.ID}}'>{{x.KIND}}</div></th>
+                            <th class=""><div id='barCodeT{{x.ID}}'>{{x.BAR_CODE}}</div></th>
+                            <th class=""><div id='priceT{{x.ID}}'>{{x.SALE_PRICE}}</div></th>
+                            <th class=""><div id='unitT{{x.ID}}'>{{x.UNIT}}</div></th>
+                            <th class=""><div id='numT{{x.ID}}'>{{x.NUM}}</div></th>
+                            <th class=""><input type="text" id="componentNumT{{x.sort}}" class="form-control" value="{{x.NUM}}"></th>
+                            <th style="width: 35%"><a id="delComponentItem" href="javascript:void(0);">删除</a></th>
+                            <th class="hideth"><input type="text" id="sonIdT{{x.sort}}" class="form-control" value="{{x.ID}}"></th>
+                        </tr>
+                    </table>
+                </div>
+                <div>
+                    <label>结算</label>
+                    <input type="checkbox" ng-model="repairData.paymentTypeFlag" ng-checked="repairData.paymentTypeFlag" ng-change="changePaymentType(repairData.paymentTypeFlag)"> 本位结算
+                    <select style="width:30%;display:inline;margin-left: 10px;" id="companySelect" ng-model="repairData.companyData"  ng-options="x.NAME for x in companyList" class="form-control" ng-disabled="repairData.paymentTypeFlag">
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+                <div style="margin-top:20px;">
+                    <button class="btn btn-primary" ng-click="save();" id="saveBtn">保存</button>
+                    <button class="btn btn-primary" ng-click="print();" id="saveBtn">打印</button>
+                </div>
+            </div>
+            <!-- /.col-lg-4 -->
+        </div>
+        <!-- /.row -->
+    </div>
+    
