@@ -7,10 +7,24 @@
     </div>
     <!-- /.row -->
 
-    <div class="row">
-        <div class="col-lg-3">
-            <button class="btn btn-primary" ng-click="carpark();" id="saveBtn">查看停车场</button>
+    <div>
+        <div style="margin-bottom: 10px;color:#337ab7" >
+            <span ng-click="add()">添加</span>
+            <span style="margin-left:10px;" ng-click="save()">保存</span>
         </div>
+        <div ng-repeat="item in dataList" class="row ">
+            <div class="form-group col-xs-6 form-inline">
+                <input class="form-control"  ng-model="item.NAME" /> 
+                <button class="btn btn-primary" ng-click="carpark(item.ID);" id="saveBtn">查看</button>
+            </div>
+        </div>
+        
+        <!-- <div class="col-lg-3">
+            <div style="display:flex;flex:1">
+                <button class="btn btn-primary" ng-click="carpark(1);" id="saveBtn">查看停车场一</button>
+                <button class="btn btn-primary" style="margin-left:20px;" ng-click="carpark(2);" id="saveBtn">查看停车场二</button>
+            </div>
+        </div> -->
         <!-- /.col-lg-12 -->
     </div>
 </div>

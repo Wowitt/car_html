@@ -1,5 +1,5 @@
 'use strict';
-angular.module('sbAdminApp').controller('RepairListCtrl', ['$scope','Init','Modal','$state','CheckBrowser','CheckParam', function ($scope,Init,Modal,$state,CheckBrowser,CheckParam) {
+angular.module('sbAdminApp').controller('CustomerlistCtrl', ['$scope','Init','Modal','$state','CheckBrowser','CheckParam', function ($scope,Init,Modal,$state,CheckBrowser,CheckParam) {
     CheckBrowser.check();
     $.extend( $.fn.dataTable.defaults, {
         searching: true,
@@ -29,31 +29,42 @@ angular.module('sbAdminApp').controller('RepairListCtrl', ['$scope','Init','Moda
         "serverSide": true,
         "columns": [
             {
+                "visible": false,
                 "data": "ID"
             },
             {
-                "data": "PLATE_NUM"
+                "visible": false,
+                "data": "SALE_USER_ID"
             },
             {
-                "data": "CAR_STATUSNAME"
+                "data": "NAME"
             },
             {
-                "data": "SALE_USERNAME"
+                "data": "PHONE"
             },
             {
-                "data": "RE_DESC"
+                "data": "EP_NAME"
             },
             {
-                "data": "begindate"
+                "data": "EP_CODE"
             },
             {
-                "class": "mytable-center",
-                "targets": -1,
-                "data": null,
-                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                    $(nTd).html("<div class='btn-group-vertical'><button type='button' class='btn btn-primary btn-sm dropdown-toggle' data-toggle='dropdown' id='a_check'>查看</button></div>");
-                }
-            }
+                "data": "SOURCE"
+            },
+            {
+                "data": "SALE_USER_NAME"
+            },
+            {
+                "data": "REGISTER_DATE"
+            },
+            // {
+            //     "class": "mytable-center",
+            //     "targets": -1,
+            //     "data": null,
+            //     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+            //         $(nTd).html("<div class='btn-group-vertical'><button type='button' class='btn btn-primary btn-sm dropdown-toggle' data-toggle='dropdown' id='a_check'>查看</button></div>");
+            //     }
+            // }
         ],
         ajax:function(data, callback, settings){
             $scope.param.ps = data.length +"";
@@ -63,12 +74,13 @@ angular.module('sbAdminApp').controller('RepairListCtrl', ['$scope','Init','Moda
                 $scope.searchContent = table.search();
             }
             $scope.param.searchContent = CheckParam.checkSql($scope.searchContent);
-            Init.iwbhttp('/car/repairList', $scope.param, function(data,header,config,status){
+            $scope.param.type = "1";
+            Init.iwbhttp('/car/customerList', $scope.param, function(data,header,config,status){
                 var returnData = {};
                 if(data.resFlag == 0){
                     returnData.recordsTotal = data.totalRow;//返回数据全部记录
                     returnData.recordsFiltered = data.totalRow;//后台不实现过滤功能，每次查询均视作全部结果
-                    returnData.data = data.repairList;//返回的数据列表
+                    returnData.data = data.dataList;//返回的数据列表
                     callback(returnData);
                 }else{
                     $scope.open(data.msg);

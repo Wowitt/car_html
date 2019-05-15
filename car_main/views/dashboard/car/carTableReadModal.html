@@ -1,0 +1,46 @@
+<div class="modal-content" style="width: 900px;">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="cancel()">&times;</button>
+        <h4 class="modal-title" id="myModalLabel2">{{content}}</h4>
+    </div>
+    <div class="modal-body">
+        <table class="table table-bordered table-hover" id="carTable">
+            <tr>
+                <th>牌照号</th>
+                <th>公里数</th>
+                <th>价格档位</th>
+                <th>行驶证</th>
+                <th>首保</th>
+                <th>钥匙</th>
+                <th>保险</th>
+                <th>年检</th>
+                <th>充电枪</th>
+                <th>工具包</th>
+                <th>三脚架</th>
+                <th>灭火器</th>
+                <th>首保</th>
+                <th>车身广告</th>
+            </tr>
+            <tr ng-repeat="x in dataList">
+                <th class="">{{x.PLATE_NUM}}</th>
+                <th class="">{{x.DRIVER_NUM}}</th>
+                <th class="">{{x.gear}}</th>
+                <th class=""><input type='checkbox' ng-model="x.DRIVING_LICENSE" ></th>
+                <th class=""><input type='checkbox' ng-model="x.MAINTENANCE_SIGN" ></th>
+                <th class=""><input type='checkbox' ng-model="x.CAR_KEY" ><input type='number' ng-model="x.CAR_KEY_NUM" style="margin-left:5px;width:30px" >把</th>
+                <th class=""><input type='checkbox' ng-model="x.INSURANCE" ></th>
+                <th class=""><input type='checkbox' ng-model="x.YEAR_CHECK_FLAG" ></th>
+                <th class=""><input type='checkbox' ng-model="x.CHARGE_GUN" ></th>
+                <th class=""><input type='checkbox' ng-model="x.TOOL_KIT" ></th>
+                <th class=""><input type='checkbox' ng-model="x.TRIPOD" ></th>
+                <th class=""><input type='checkbox' ng-model="x.FIRE_EXTINGUISHER" ></th>
+                <th class=""><input type='checkbox' ng-model="x.MAINTENANCE" ></th>
+                <th class=""><input type='checkbox' ng-model="x.AD" ></th>
+            </tr>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" ng-click="save()" id="sureBtn">保存</button>
+        <button type="button" class="btn btn-default" ng-click="cancel()">关闭</button>
+    </div>
+</div>

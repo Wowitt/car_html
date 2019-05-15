@@ -1,5 +1,5 @@
 'use strict';
-angular.module('sbAdminApp').controller('RepairListCtrl', ['$scope','Init','Modal','$state','CheckBrowser','CheckParam', function ($scope,Init,Modal,$state,CheckBrowser,CheckParam) {
+angular.module('sbAdminApp').controller('YearchecklistCtrl', ['$scope','Init','Modal','$state','CheckBrowser','CheckParam', function ($scope,Init,Modal,$state,CheckBrowser,CheckParam) {
     CheckBrowser.check();
     $.extend( $.fn.dataTable.defaults, {
         searching: true,
@@ -35,23 +35,26 @@ angular.module('sbAdminApp').controller('RepairListCtrl', ['$scope','Init','Moda
                 "data": "PLATE_NUM"
             },
             {
-                "data": "CAR_STATUSNAME"
+                "data": "ENGINE_NUMBER"
             },
             {
-                "data": "SALE_USERNAME"
+                "data": "DRIVER_YEAR",
+                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                    $(nTd).html("<input value='"+sData+"'>");
+                }
             },
             {
-                "data": "RE_DESC"
+                "data": "DRIVER_MONTH"
             },
             {
-                "data": "begindate"
+                "data": "DRIVER_DATE"
             },
             {
                 "class": "mytable-center",
                 "targets": -1,
                 "data": null,
                 "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                    $(nTd).html("<div class='btn-group-vertical'><button type='button' class='btn btn-primary btn-sm dropdown-toggle' data-toggle='dropdown' id='a_check'>查看</button></div>");
+                    $(nTd).html("<div class='btn-group-vertical'><button type='button' class='btn btn-primary btn-sm dropdown-toggle' data-toggle='dropdown' id='a_check'>保存</button></div>");
                 }
             }
         ],
@@ -63,12 +66,12 @@ angular.module('sbAdminApp').controller('RepairListCtrl', ['$scope','Init','Moda
                 $scope.searchContent = table.search();
             }
             $scope.param.searchContent = CheckParam.checkSql($scope.searchContent);
-            Init.iwbhttp('/car/repairList', $scope.param, function(data,header,config,status){
+            Init.iwbhttp('/car/carListForYearCheck', $scope.param, function(data,header,config,status){
                 var returnData = {};
                 if(data.resFlag == 0){
                     returnData.recordsTotal = data.totalRow;//返回数据全部记录
                     returnData.recordsFiltered = data.totalRow;//后台不实现过滤功能，每次查询均视作全部结果
-                    returnData.data = data.repairList;//返回的数据列表
+                    returnData.data = data.dataList;//返回的数据列表
                     callback(returnData);
                 }else{
                     $scope.open(data.msg);
@@ -106,13 +109,21 @@ angular.module('sbAdminApp').controller('RepairListCtrl', ['$scope','Init','Moda
     //查看详情
     $('#repairTable tbody').on('click', '#a_check', function () {
         var row = table.row($(this).parents('tr'));
+        console.log($(row.node()).find("input").val())
+        var input_val = $(row.node()).find("input").val()
         var data = row.data();
-        var repairId = data.ID;
-        $state.go("dashboard.repairIndex.repairDetailList",
-        {
-            "repairId":repairId,
-            "ifAdd":"1",
-            "from":"dashboard.repairIndex.repairList"
+        var param = {}
+        param.ID = data.ID
+        param.PLATE_NUM = data.PLATE_NUM
+        param.ENGINE_NUMBER = data.ENGINE_NUMBER
+        param.DRIVER_YEAR = input_val
+        Init.iwbhttp('/car/updateCarDriverYear', {obj:param}, function(data,header,config,status){
+            if(data.resFlag == 0){
+                $scope.open(data.msg);
+            }else{
+                $scope.open(data.msg);
+            }
+        },function(data,header,config,status){
         });
     });
 

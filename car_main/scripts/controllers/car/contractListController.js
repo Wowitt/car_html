@@ -1,5 +1,5 @@
 'use strict';
-angular.module('sbAdminApp').controller('RepairListCtrl', ['$scope','Init','Modal','$state','CheckBrowser','CheckParam', function ($scope,Init,Modal,$state,CheckBrowser,CheckParam) {
+angular.module('sbAdminApp').controller('ContractListCtrl', ['$scope','Init','Modal','$state','CheckBrowser','CheckParam', function ($scope,Init,Modal,$state,CheckBrowser,CheckParam) {
     CheckBrowser.check();
     $.extend( $.fn.dataTable.defaults, {
         searching: true,
@@ -25,26 +25,35 @@ angular.module('sbAdminApp').controller('RepairListCtrl', ['$scope','Init','Moda
     //table当前数据（页面数据页数等）
     $scope.pageData = "";
     $scope.param = {};
-    var table = $('#repairTable').DataTable({
+    var table = $('#contractTable').DataTable({
         "serverSide": true,
         "columns": [
             {
                 "data": "ID"
             },
             {
-                "data": "PLATE_NUM"
+                "mDataProp": "CU_TYPE",
+                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                    if(sData == "1")
+                    {
+                        $(nTd).html("公司");
+                    }else
+                    {
+                        $(nTd).html("个人");
+                    }
+                }
             },
             {
-                "data": "CAR_STATUSNAME"
+                "data": "CU_EP_NAME"
             },
             {
-                "data": "SALE_USERNAME"
+                "data": "CU_NAME"
             },
             {
-                "data": "RE_DESC"
+                "data": "TYPE"
             },
             {
-                "data": "begindate"
+                "data": "STATUSNAME"
             },
             {
                 "class": "mytable-center",
@@ -63,12 +72,12 @@ angular.module('sbAdminApp').controller('RepairListCtrl', ['$scope','Init','Moda
                 $scope.searchContent = table.search();
             }
             $scope.param.searchContent = CheckParam.checkSql($scope.searchContent);
-            Init.iwbhttp('/car/repairList', $scope.param, function(data,header,config,status){
+            Init.iwbhttp('/car/contractList', $scope.param, function(data,header,config,status){
                 var returnData = {};
                 if(data.resFlag == 0){
                     returnData.recordsTotal = data.totalRow;//返回数据全部记录
                     returnData.recordsFiltered = data.totalRow;//后台不实现过滤功能，每次查询均视作全部结果
-                    returnData.data = data.repairList;//返回的数据列表
+                    returnData.data = data.dataList;//返回的数据列表
                     callback(returnData);
                 }else{
                     $scope.open(data.msg);
@@ -100,30 +109,23 @@ angular.module('sbAdminApp').controller('RepairListCtrl', ['$scope','Init','Moda
         "fixedColumns":   {
             leftColumns:0,
             rightColumns: 1
-        }
+        },
+
+        "dom": 'Zlfrtip',
+
     });
 
     //查看详情
-    $('#repairTable tbody').on('click', '#a_check', function () {
+    $('#contractTable tbody').on('click', '#a_check', function () {
         var row = table.row($(this).parents('tr'));
         var data = row.data();
-        var repairId = data.ID;
-        $state.go("dashboard.repairIndex.repairDetailList",
+        var id = data.ID;
+        $state.go("dashboard.contractIndex.contractDetailList",
         {
-            "repairId":repairId,
-            "ifAdd":"1",
-            "from":"dashboard.repairIndex.repairList"
+            "id":id,
+            "from":"dashboard.contractIndex.contractList"
         });
     });
-
-    $scope.add = function(){
-        $state.go("dashboard.repairIndex.repairDetailList",
-        {
-            "repairId":"",
-            "ifAdd":"0",
-            "from":"dashboard.planIndex.planList"
-        });
-    }
 
     //提示modal弹框
     $scope.open = function (content,data) {

@@ -668,6 +668,75 @@ iwoboApp.config(['$httpProvider', '$stateProvider', '$urlRouterProvider', '$ocLa
                 }
             }
         })
+        .state('dashboard.contractIndex', {
+            url: '/contractIndex',
+            controller: 'ContractIndexCtrl',
+            templateUrl: 'views/dashboard/car/contractIndex.html',
+            resolve: {
+                loadMyFiles: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'sbAdminApp',
+                        files: [
+                            'lib/dataTables/dataTables.bootstrap.min.css',
+                            'lib/dataTables/dataTables.bootstrap.min.js',
+                            'lib/dataTables/jquery.dataTables.min.css',
+                            'lib/dataTables/jquery.dataTables.min.js',
+                            'scripts/controllers/car/contractIndexController.js'
+                        ]
+                    })
+                }
+            }
+        })
+        .state('dashboard.contractIndex.contractList', {
+            url: '/contractList',
+            controller: 'ContractListCtrl',
+            templateUrl: 'views/dashboard/car/contractList.html',
+            resolve: {
+                loadMyFiles: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'sbAdminApp',
+                        files: [
+                            'lib/dataTables/dataTables.bootstrap.min.css',
+                            'lib/dataTables/dataTables.bootstrap.min.js',
+                            'lib/dataTables/jquery.dataTables.min.css',
+                            'lib/dataTables/jquery.dataTables.min.js',
+                            'scripts/controllers/modal/promptModalController.js',
+                            'scripts/controllers/car/contractListController.js'
+                        ]
+                    })
+                }
+            }
+        })
+        .state('dashboard.contractIndex.contractDetailList', {
+            url: '/contractDetailList',
+            controller: 'ContractDetailListCtrl',
+            templateUrl: 'views/dashboard/car/contractDetailList.html',
+            params: {
+                "id": null,
+                "from":null
+            },
+            resolve: {
+                loadMyFiles: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'sbAdminApp',
+                        files: [
+                            'lib/dataTables/dataTables.bootstrap.min.css',
+                            'lib/dataTables/dataTables.bootstrap.min.js',
+                            'lib/dataTables/jquery.dataTables.min.css',
+                            'lib/dataTables/jquery.dataTables.min.js',
+                            'scripts/directives/dateTools/WdatePicker.js',
+                            'scripts/controllers/modal/promptModalController.js',
+                            'scripts/controllers/modal/confirmModalController.js',
+                            'scripts/controllers/car/financeFlowModalController.js',
+                            'scripts/controllers/car/carTableModalController.js',
+                            'scripts/controllers/car/carTableDeliverModalController.js',
+                            'scripts/controllers/car/carTableReadModalController.js',
+                            'scripts/controllers/car/contractDetailListController.js',
+                        ]
+                    })
+                }
+            }
+        })
         .state('dashboard.carCountIndex', {
             url: '/carCountIndex',
             controller: 'CarCountIndexCtrl',
@@ -726,6 +795,192 @@ iwoboApp.config(['$httpProvider', '$stateProvider', '$urlRouterProvider', '$ocLa
                             'lib/dataTables/jquery.dataTables.min.js',
                             'scripts/controllers/modal/promptModalController.js',
                             'scripts/controllers/car/carCountDetailListController.js'
+                        ]
+                    })
+                }
+            }
+        })
+        .state('dashboard.yearchecklistIndex', {
+            url: '/yearchecklistIndex',
+            controller: 'YearchecklistIndexCtrl',
+            templateUrl: 'views/dashboard/car/yearchecklistIndex.html',
+            resolve: {
+                loadMyFiles: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'sbAdminApp',
+                        files: [
+                            'lib/dataTables/dataTables.bootstrap.min.css',
+                            'lib/dataTables/dataTables.bootstrap.min.js',
+                            'lib/dataTables/jquery.dataTables.min.css',
+                            'lib/dataTables/jquery.dataTables.min.js',
+                            'scripts/controllers/car/yearchecklistIndexController.js'
+                        ]
+                    })
+                }
+            }
+        })
+        .state('dashboard.yearchecklistIndex.yearchecklist', {
+            url: '/yearchecklist',
+            controller: 'YearchecklistCtrl',
+            templateUrl: 'views/dashboard/car/yearchecklist.html',
+            resolve: {
+                loadMyFiles: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'sbAdminApp',
+                        files: [
+                            'lib/dataTables/dataTables.bootstrap.min.css',
+                            'lib/dataTables/dataTables.bootstrap.min.js',
+                            'lib/dataTables/jquery.dataTables.min.css',
+                            'lib/dataTables/jquery.dataTables.min.js',
+                            'scripts/controllers/modal/promptModalController.js',
+                            'scripts/controllers/car/yearchecklistController.js'
+                        ]
+                    })
+                }
+            }
+        })
+        .state('dashboard.breakrulesListIndex', {
+            url: '/breakrulesListIndex',
+            controller: 'BreakrulesListIndexCtrl',
+            templateUrl: 'views/dashboard/car/breakrulesListIndex.html',
+            resolve: {
+                loadMyFiles: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'sbAdminApp',
+                        files: [
+                            'lib/dataTables/dataTables.bootstrap.min.css',
+                            'lib/dataTables/dataTables.bootstrap.min.js',
+                            'lib/dataTables/jquery.dataTables.min.css',
+                            'lib/dataTables/jquery.dataTables.min.js',
+                            'scripts/controllers/car/breakrulesListIndexController.js'
+                        ]
+                    })
+                }
+            }
+        })
+        .state('dashboard.breakrulesListIndex.breakrulesList', {
+            url: '/breakrulesList',
+            controller: 'BreakrulesListCtrl',
+            templateUrl: 'views/dashboard/car/breakrulesList.html',
+            resolve: {
+                loadMyFiles: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'sbAdminApp',
+                        files: [
+                            'lib/dataTables/dataTables.bootstrap.min.css',
+                            'lib/dataTables/dataTables.bootstrap.min.js',
+                            'lib/dataTables/jquery.dataTables.min.css',
+                            'lib/dataTables/jquery.dataTables.min.js',
+                            'scripts/controllers/modal/promptModalController.js',
+                            'scripts/controllers/car/breakrulesListController.js'
+                        ]
+                    })
+                }
+            }
+        })
+        .state('dashboard.breakrulesListIndex.breakrulesListDetail', {
+            url: '/breakrulesListDetail',
+            controller: 'BreakrulesListDetailCtrl',
+            templateUrl: 'views/dashboard/car/breakrulesListDetail.html',
+            params: {
+                "ID":"",
+                "PLATE_NUM":"",
+                "BREAKRULES_TIME":"",
+                "BREAKRULES_ADDRESS":"",
+                "BREAKRULES_DO":"",
+                "ifAdd": null,
+                "from":null
+            },
+            resolve: {
+                loadMyFiles: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'sbAdminApp',
+                        files: [
+                            'lib/dataTables/dataTables.bootstrap.min.css',
+                            'lib/dataTables/dataTables.bootstrap.min.js',
+                            'lib/dataTables/jquery.dataTables.min.css',
+                            'lib/dataTables/jquery.dataTables.min.js',
+                            'scripts/controllers/modal/promptModalController.js',
+                            'scripts/controllers/modal/confirmModalController.js',
+                            'scripts/controllers/car/breakrulesListDetailController.js'
+                        ]
+                    })
+                }
+            }
+        })
+        .state('dashboard.customerlistIndex', {
+            url: '/customerlistIndex',
+            controller: 'CustomerlistIndexCtrl',
+            templateUrl: 'views/dashboard/car/customerlistIndex.html',
+            resolve: {
+                loadMyFiles: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'sbAdminApp',
+                        files: [
+                            'lib/dataTables/dataTables.bootstrap.min.css',
+                            'lib/dataTables/dataTables.bootstrap.min.js',
+                            'lib/dataTables/jquery.dataTables.min.css',
+                            'lib/dataTables/jquery.dataTables.min.js',
+                            'scripts/controllers/car/customerlistIndexController.js'
+                        ]
+                    })
+                }
+            }
+        })
+        .state('dashboard.customerlistIndex.customerlist', {
+            url: '/customerlist',
+            controller: 'CustomerlistCtrl',
+            templateUrl: 'views/dashboard/car/customerlist.html',
+            resolve: {
+                loadMyFiles: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'sbAdminApp',
+                        files: [
+                            'lib/dataTables/dataTables.bootstrap.min.css',
+                            'lib/dataTables/dataTables.bootstrap.min.js',
+                            'lib/dataTables/jquery.dataTables.min.css',
+                            'lib/dataTables/jquery.dataTables.min.js',
+                            'scripts/controllers/modal/promptModalController.js',
+                            'scripts/controllers/car/customerlistController.js'
+                        ]
+                    })
+                }
+            }
+        })
+        .state('dashboard.customerwilllistIndex', {
+            url: '/customerwilllistIndex',
+            controller: 'CustomerwilllistIndexCtrl',
+            templateUrl: 'views/dashboard/car/customerwilllistIndex.html',
+            resolve: {
+                loadMyFiles: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'sbAdminApp',
+                        files: [
+                            'lib/dataTables/dataTables.bootstrap.min.css',
+                            'lib/dataTables/dataTables.bootstrap.min.js',
+                            'lib/dataTables/jquery.dataTables.min.css',
+                            'lib/dataTables/jquery.dataTables.min.js',
+                            'scripts/controllers/car/customerwilllistIndexController.js'
+                        ]
+                    })
+                }
+            }
+        })
+        .state('dashboard.customerwilllistIndex.customerwilllist', {
+            url: '/customerwilllist',
+            controller: 'CustomerwilllistCtrl',
+            templateUrl: 'views/dashboard/car/customerwilllist.html',
+            resolve: {
+                loadMyFiles: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'sbAdminApp',
+                        files: [
+                            'lib/dataTables/dataTables.bootstrap.min.css',
+                            'lib/dataTables/dataTables.bootstrap.min.js',
+                            'lib/dataTables/jquery.dataTables.min.css',
+                            'lib/dataTables/jquery.dataTables.min.js',
+                            'scripts/controllers/modal/promptModalController.js',
+                            'scripts/controllers/car/customerwilllistController.js'
                         ]
                     })
                 }
@@ -809,6 +1064,7 @@ iwoboApp.config(['$httpProvider', '$stateProvider', '$urlRouterProvider', '$ocLa
                             'lib/dataTables/dataTables.bootstrap.min.js',
                             'lib/dataTables/jquery.dataTables.min.css',
                             'lib/dataTables/jquery.dataTables.min.js',
+                            'scripts/controllers/modal/promptModalController.js',
                             'scripts/controllers/car/carParkController.js'
                         ]
                     })

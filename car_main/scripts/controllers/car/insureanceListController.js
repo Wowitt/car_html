@@ -39,25 +39,68 @@ angular.module('sbAdminApp').controller('InsureanceListCtrl', ['$scope','Init','
                 "data": "ENGINE_NUMBER"
             },
             {
-                "data": "BUS_IS"
+                "data": "FORCE_IS",
+                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                    if(oData.force_remark == '1'){
+                        $(nTd).css('background-color','#FF663F')
+                    }
+                    if(oData.force_remark == '2'){
+                        $(nTd).css('background-color','#22D0C6')
+                    }
+                    $(nTd).html("<input value='"+sData+"'>");
+                }
             },
             {
-                "data": "BUS_DATE"
+                "data": "FORCE_DATE",
+                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                    if(sData == null){
+                        sData=""
+                    }
+                    if(oData.force_remark == '1'){
+                        $(nTd).css('background-color','#FF663F')
+                    }
+                    if(oData.force_remark == '2'){
+                        $(nTd).css('background-color','#22D0C6')
+                    }
+                    
+                    $(nTd).html("<input  value='"+sData+"'>");
+                }
             },
             {
-                "data": "FORCE_IS"
+                "data": "BUS_IS",
+                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                    if(oData.bus_remark == '1'){
+                        $(nTd).css('background-color','#FF663F')
+                    }
+                    if(oData.bus_remark == '2'){
+                        $(nTd).css('background-color','#22D0C6')
+                    }
+                    $(nTd).html("<input value='"+sData+"'>");
+                }
             },
             {
-                "data": "FORCE_DATE"
-            },
-            // {
-            //     "class": "mytable-center",
-            //     "targets": -1,
-            //     "data": null,
-            //     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-            //         $(nTd).html("<div class='btn-group-vertical'><button type='button' class='btn btn-primary btn-sm dropdown-toggle' data-toggle='dropdown' id='a_check'>查看</button></div>");
-            //     }
-            // }
+                "data": "BUS_DATE",
+                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                    if(sData == null){
+                        sData=""
+                    }
+                    if(oData.bus_remark == '1'){
+                        $(nTd).css('background-color','#FF663F')
+                    }
+                    if(oData.bus_remark == '2'){
+                        $(nTd).css('background-color','#22D0C6')
+                    }
+                    $(nTd).html("<input value='"+sData+"'>");
+                }
+            },  
+            {
+                "class": "mytable-center",
+                "targets": -1,
+                "data": null,
+                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                    $(nTd).html("<div class='btn-group-vertical'><button type='button' class='btn btn-primary btn-sm dropdown-toggle' data-toggle='dropdown' id='a_check'>保存</button></div>");
+                }
+            }
         ],
         ajax:function(data, callback, settings){
             $scope.param.ps = data.length +"";
@@ -101,28 +144,31 @@ angular.module('sbAdminApp').controller('InsureanceListCtrl', ['$scope','Init','
         "scrollXInner": "100%",
         "scrollY": "350px",
         "scrollCollapse": true,
-        // "fixedColumns":   {
-        //     leftColumns:0,
-        //     rightColumns: 1
-        // }
+        "fixedColumns":   {
+            leftColumns:0,
+            rightColumns: 1
+        }
     });
 
     //查看详情
     $('#insureanceTable tbody').on('click', '#a_check', function () {
         var row = table.row($(this).parents('tr'));
         var data = row.data();
-        var tpId = data.TP_ID;
-        var epId = data.EP_ID;
-        var epName = data.EP_NAME;
-        var applyId = data.applyId;
-        $state.go("dashboard.planForAdminIndex.planForAdminMain",
-        {
-            "tpId":tpId,
-            "epId":epId,
-            "epName":epName,
-            "btnFlag":false,
-            "applyId":applyId,
-            "from":"dashboard.planForAdminIndex.planForAdminList"
+        var param = {}
+        param.ID = data.ID
+        param.PLATE_NUM = data.PLATE_NUM
+        param.ENGINE_NUMBER = data.ENGINE_NUMBER
+        param.FORCE_IS = $($(row.node()).find("input")[0]).val()
+        param.FORCE_DATE = $($(row.node()).find("input")[1]).val()
+        param.BUS_IS = $($(row.node()).find("input")[2]).val()
+        param.BUS_DATE = $($(row.node()).find("input")[3]).val()
+        Init.iwbhttp('/car/updateInsureance', {obj:param}, function(data,header,config,status){
+            if(data.resFlag == 0){
+                $scope.open(data.msg);
+            }else{
+                $scope.open(data.msg);
+            }
+        },function(data,header,config,status){
         });
     });
 

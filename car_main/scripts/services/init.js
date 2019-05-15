@@ -7,6 +7,7 @@ angular.module('sbAdminApp').factory('Init', ['$http','$rootScope','localStorage
     {
         localStorageService.set('IWBSESSION',data.IWBSESSION);
         localStorageService.set('nickName',data.nickName);
+        localStorageService.set('userName',data.userName);
         localStorageService.set('ifLogin',data.ifLogin);
         localStorageService.set('userId',data.userId);
         localStorageService.set('userType',data.userType);
@@ -19,6 +20,7 @@ angular.module('sbAdminApp').factory('Init', ['$http','$rootScope','localStorage
         localStorageService.set('sepaName',data.sepaName);
         localStorageService.set('status',data.status);
         localStorageService.set('roleId',data.roleId);
+        localStorageService.set('roleIds',data.roleIds);
         if(data.newGuideFlag != undefined && data.newGuideFlag != null){
             localStorageService.set('newGuideFlag',data.newGuideFlag);
         }else{
@@ -46,9 +48,10 @@ angular.module('sbAdminApp').factory('Init', ['$http','$rootScope','localStorage
             //sessionStorage.setItem('userPortrait',$rootScope.baseUrl+data.contextPath+data.userPortrait);
             //$rootScope.userPortrait = sessionStorage.getItem('userPortrait');
         }
-        if(data.ifLogin == '1')
+        if(data.ifLogin == '0')
         {
             $rootScope.nickName = data.nickName;
+            $rootScope.userName = data.userName;
             $rootScope.tel = data.tel;
             $rootScope.mail = data.mail;
             $rootScope.loginUrl = 'login';

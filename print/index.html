@@ -99,13 +99,13 @@ function getQueryVariable(variable)
     for(var x=0;x<row;x++){
         str += "<tr>"
         if(x ==0){
-            str += "<th>零件名称</th><th>类型</th><th>条码</th><th>单价</th><th>单位</th><th>数量</th>"
-        }
-        else if(x == 1){
-            str += "<td colspan='1'>付款人</td>"
+            str += "<td colspan='1' style='background-color:gray;'>付款人</td>"
             str += "<td colspan='2'>"+decodeURI(getQueryVariable('payname'))+"</td>"
-            str += "<td colspan='1'>金额</td>"
-            str += "<td colspan='2'>aaa</td>"
+            str += "<td colspan='1' style='background-color:gray;'>金额</td>"
+            str += "<td colspan='2'>"+decodeURI(getQueryVariable('money'))+"</td>"
+        }
+        else if(x == 1){          
+            str += "<th>零件名称</th><th>类型</th><th>条码</th><th>单价</th><th>单位</th><th>数量</th>"
         }else if(x < row -1){
             var index = x
             console.log(index)

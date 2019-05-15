@@ -36,6 +36,7 @@
                 background-size:contain;
             }
         </style>
+        <script src="jquery.min.js"></script>
 	</head>
 	<body>
 		<div id="app">
@@ -44,29 +45,104 @@
 	</body>
 </html>
 <script>
-;(function(window,undefined){
-    var appNode = document.getElementById('app');
-    var htmlstr = ""
-    for(var i = 1 ; i <= 15 ; i++){
-        htmlstr += '<div style="display:flex;">'
-        for(var j = 1 ; j <= 40 ; j++){
-            if(Math.floor(Math.random(1)*10)){
-                htmlstr += '<div id="sit'+i+'_'+j+'" class="sit_normal" title="" >';
-                htmlstr += '<h1>'+i+'</h1>';
-                htmlstr += '<h2>'+j+'</h2>';
-                htmlstr += '</div>'
-            }
-            else{
-                htmlstr += '<div id="sit'+i+'_'+j+'" class="sit_busy" title="津xxxxx&#13停放日期:yyyy-MM-dd hh:mm:ss&#13车位'+i+'_'+j+'" >';
-                htmlstr += '<h1></h1>';
-                htmlstr += '<h2></h2>';
-                htmlstr += '</div>'
-            }
-        }
-        htmlstr += '</div>'
+// ;(function(window,undefined){
+//     var appNode = document.getElementById('app');
+//     var htmlstr = ""
+//     for(var i = 1 ; i <= 15 ; i++){
+//         htmlstr += '<div style="display:flex;">'
+//         for(var j = 1 ; j <= 40 ; j++){
+//             if(Math.floor(Math.random(1)*10)){
+//                 htmlstr += '<div id="sit'+i+'_'+j+'" class="sit_normal" title="" >';
+//                 htmlstr += '<h1>'+i+'</h1>';
+//                 htmlstr += '<h2>'+j+'</h2>';
+//                 htmlstr += '</div>'
+//             }
+//             else{
+//                 htmlstr += '<div id="sit'+i+'_'+j+'" class="sit_busy" title="津xxxxx&#13停放日期:yyyy-MM-dd hh:mm:ss&#13车位'+i+'_'+j+'" >';
+//                 htmlstr += '<h1></h1>';
+//                 htmlstr += '<h2></h2>';
+//                 htmlstr += '</div>'
+//             }
+//         }
+//         htmlstr += '</div>'
+//     }
+//     appNode.innerHTML = htmlstr
+// })(window);
+function getQueryVariable(variable)
+{
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+    for (var i=0;i<vars.length;i++) {
+            var pair = vars[i].split("=");
+            if(pair[0] == variable){return pair[1];}
     }
-    appNode.innerHTML = htmlstr
-})(window);
+    return(false);
+}
+var appNode = document.getElementById('app');
+var htmlstr = ""
+var param = {}
+param.fieldId = decodeURI(getQueryVariable('fieldId'));
+$.ajax({ 
+    type : "POST", //提交方式 
+    // url : "http://localhost:9002/api/demo/carpark",
+    url : "http://39.96.42.117:9000/api/demo/carpark",
+    data : param,
+    success : function(result) {//返回数据根据结果进行相应的处理 
+        if(result.resFlag == '0'){
+            for(var i = 0 ; i < result.list.length ; i++){
+                if(i%40 == 0){
+                    if(i!=0){
+                        htmlstr += '</div>';
+                    }
+                    htmlstr += '<div style="display:flex;">';
+                }
+                var arr = result.list[i].NO.split('-');
+                var r = arr[0].substr(1);
+                var c = arr[1]
+                if(result.list[i].CAR_ID == ''){
+                    htmlstr += '<div id="sit'+r+'-'+c+'" class="sit_normal" title="" >';
+                    htmlstr += '<h1>'+r+'</h1>';
+                    htmlstr += '<h2>'+c+'</h2>';
+                    htmlstr += '</div>'
+                }else{
+                    htmlstr += '<div id="sit'+r+'-'+c+'" class="sit_busy" title="'+result.list[i].PLATE_NUM+'&#13停放日期:'+result.list[i].showdate+'&#13车位'+r+'-'+c+'" >';
+                    htmlstr += '<h1></h1>';
+                    htmlstr += '<h2></h2>';
+                    htmlstr += '</div>'
+                }
+                // console.log(result.list[i])
+            }
+            appNode.innerHTML = htmlstr
+            // for(var i = 1 ; i <= 15 ; i++){
+            //     htmlstr += '<div style="display:flex;">'
+            //     for(var j = 1 ; j <= 40 ; j++){
+            //         var no = '';
+            //         if(decodeURI(getQueryVariable('fieldId')) == '1'){
+            //             no = 'A'+i+'-'+j;
+            //         }
+            //         else if(decodeURI(getQueryVariable('fieldId')) == '2'){
+            //             no = 'B'+i+'-'+j;
+            //         }
+            //         // if(Math.floor(Math.random(1)*10)){
+            //         //     htmlstr += '<div id="sit'+i+'_'+j+'" class="sit_normal" title="" >';
+            //         //     htmlstr += '<h1>'+i+'</h1>';
+            //         //     htmlstr += '<h2>'+j+'</h2>';
+            //         //     htmlstr += '</div>'
+            //         // }
+            //         // else{
+            //         //     htmlstr += '<div id="sit'+i+'_'+j+'" class="sit_busy" title="津xxxxx&#13停放日期:yyyy-MM-dd hh:mm:ss&#13车位'+i+'_'+j+'" >';
+            //         //     htmlstr += '<h1></h1>';
+            //         //     htmlstr += '<h2></h2>';
+            //         //     htmlstr += '</div>'
+            //         // }
+            //     }
+            //     htmlstr += '</div>'
+            // }
+            // appNode.innerHTML = htmlstr
+        }
+    } 
+}); 
+
 </script>
 
 

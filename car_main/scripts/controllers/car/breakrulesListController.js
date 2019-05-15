@@ -1,5 +1,5 @@
 'use strict';
-angular.module('sbAdminApp').controller('RepairListCtrl', ['$scope','Init','Modal','$state','CheckBrowser','CheckParam', function ($scope,Init,Modal,$state,CheckBrowser,CheckParam) {
+angular.module('sbAdminApp').controller('BreakrulesListCtrl', ['$scope','Init','Modal','$state','CheckBrowser','CheckParam', function ($scope,Init,Modal,$state,CheckBrowser,CheckParam) {
     CheckBrowser.check();
     $.extend( $.fn.dataTable.defaults, {
         searching: true,
@@ -29,22 +29,20 @@ angular.module('sbAdminApp').controller('RepairListCtrl', ['$scope','Init','Moda
         "serverSide": true,
         "columns": [
             {
+                "visible": false,
                 "data": "ID"
             },
             {
                 "data": "PLATE_NUM"
             },
             {
-                "data": "CAR_STATUSNAME"
+                "data": "BREAKRULES_TIME"
             },
             {
-                "data": "SALE_USERNAME"
+                "data": "BREAKRULES_ADDRESS"
             },
             {
-                "data": "RE_DESC"
-            },
-            {
-                "data": "begindate"
+                "data": "BREAKRULES_DO"
             },
             {
                 "class": "mytable-center",
@@ -63,12 +61,12 @@ angular.module('sbAdminApp').controller('RepairListCtrl', ['$scope','Init','Moda
                 $scope.searchContent = table.search();
             }
             $scope.param.searchContent = CheckParam.checkSql($scope.searchContent);
-            Init.iwbhttp('/car/repairList', $scope.param, function(data,header,config,status){
+            Init.iwbhttp('/car/breakrulesList', $scope.param, function(data,header,config,status){
                 var returnData = {};
                 if(data.resFlag == 0){
                     returnData.recordsTotal = data.totalRow;//返回数据全部记录
                     returnData.recordsFiltered = data.totalRow;//后台不实现过滤功能，每次查询均视作全部结果
-                    returnData.data = data.repairList;//返回的数据列表
+                    returnData.data = data.dataList;//返回的数据列表
                     callback(returnData);
                 }else{
                     $scope.open(data.msg);
@@ -107,21 +105,24 @@ angular.module('sbAdminApp').controller('RepairListCtrl', ['$scope','Init','Moda
     $('#repairTable tbody').on('click', '#a_check', function () {
         var row = table.row($(this).parents('tr'));
         var data = row.data();
-        var repairId = data.ID;
-        $state.go("dashboard.repairIndex.repairDetailList",
+        $state.go("dashboard.breakrulesListIndex.breakrulesListDetail",
         {
-            "repairId":repairId,
+            "ID":data.ID,
+            "PLATE_NUM":data.PLATE_NUM,
+            "BREAKRULES_TIME":data.BREAKRULES_TIME,
+            "BREAKRULES_ADDRESS":data.BREAKRULES_ADDRESS,
+            "BREAKRULES_DO":data.BREAKRULES_DO,
             "ifAdd":"1",
-            "from":"dashboard.repairIndex.repairList"
+            "from":"dashboard.breakrulesListIndex"
         });
     });
 
     $scope.add = function(){
-        $state.go("dashboard.repairIndex.repairDetailList",
+        $state.go("dashboard.breakrulesListIndex.breakrulesListDetail",
         {
             "repairId":"",
             "ifAdd":"0",
-            "from":"dashboard.planIndex.planList"
+            "from":"dashboard.breakrulesListIndex"
         });
     }
 

@@ -54,7 +54,7 @@ angular.module('sbAdminApp').controller('CarCountListCtrl', ['$scope','Init','Mo
                 "pagingType": "full_numbers",
                 "columnDefs": [
                     {
-                        searchable: false,
+                        searchable: true,
                         targets: 0
                     }
                 ]

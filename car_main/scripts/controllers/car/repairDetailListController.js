@@ -25,6 +25,7 @@ angular.module('sbAdminApp').controller('RepairDetailListCtrl', ['$rootScope', '
     if(ifAdd == 1){
         //查询单位信息
         Init.iwbhttp('/car/queryRepair', par, function (data, header, config, status) {
+            $scope.repairData = data.repairData
             $scope.repairData.ID = data.repairData.ID;
             $scope.repairData.carId = data.repairData.CAR_ID;
             $scope.repairData.plateNum = data.repairData.PLATE_NUM;
@@ -103,8 +104,18 @@ angular.module('sbAdminApp').controller('RepairDetailListCtrl', ['$rootScope', '
                 $scope.repairData.plateNum = data.car.PLATE_NUM;
                 $scope.repairData.engineNumber = data.car.ENGINE_NUMBER;
                 $scope.repairData.statusname = data.car.STATUSNAME;
-                $scope.repairData.saleUserId = data.car.USER_ID;
-                $scope.repairData.saleUserName = data.car.USER_NAME;
+                $scope.repairData.saleUserId = data.car.SALE_USER_ID ? data.car.SALE_USER_ID : '';
+                $scope.repairData.saleUserName = data.car.SALE_USER_NAME ? data.car.SALE_USER_NAME : '';
+                $scope.repairData.CU_TYPE = data.car.CU_TYPE ? data.car.CU_TYPE : '';
+                $scope.repairData.CU_NAME = data.car.CU_NAME ? data.car.CU_NAME : '';
+                $scope.repairData.CU_PHONE = data.car.CU_PHONE ? data.car.CU_PHONE : '';
+                $scope.repairData.CU_EP_NAME = data.car.CU_EP_NAME ? data.car.CU_EP_NAME : '';
+                $scope.repairData.CONTRACT_ID = data.car.CONTRACT_ID ? data.car.CONTRACT_ID : '';
+                $scope.repairData.CONTRACT_TYPE = data.car.CONTRACT_TYPE ? data.car.CONTRACT_TYPE : '';
+                $scope.repairData.CONTRACT_NAME = data.car.CONTRACT_NAME ? data.car.CONTRACT_NAME : '';
+                if($scope.repairData.CU_NAME == ''){
+                    $scope.repairData.paymentTypeFlag = false;
+                }
             }else{
                 $scope.open(data.msg)
             }
@@ -356,6 +367,7 @@ angular.module('sbAdminApp').controller('RepairDetailListCtrl', ['$rootScope', '
         var table = document.getElementById("detailListTable");
         var row = table.rows.length;
         var str = ""
+        var money = 0;
         for (var i = 2; i < row; i++) {
             var index2 = components.length;
             var componentStr = table.rows[i].cells[0].childNodes[0].value;
@@ -376,9 +388,16 @@ angular.module('sbAdminApp').controller('RepairDetailListCtrl', ['$rootScope', '
                 str += "&KIND"+index+"="+componentObj.KIND;
                 str += "&UNIT"+index+"="+componentObj.UNIT;
                 str += "&NUM"+index+"="+num;
+                money += parseFloat(componentObj.SALE_PRICE)*parseFloat(num)
             }
         }
-        var sub_url = $rootScope.printUrl+"?payname="+$scope.repairData.companyData.NAME+"&plateNum="+$scope.repairData.plateNum+"&engineNumber="+$scope.repairData.engineNumber+"&statusname="+$scope.repairData.statusname+"&saleUserName="+$scope.repairData.saleUserName+"&begindate="+$scope.repairData.begindate+"&repairId="+$scope.repairData.ID+"&desc="+$scope.repairData.RE_DESC+"&row="+row+str;
+        var payname = ''
+        if( !$scope.repairData.CU_NAME || $scope.repairData.CU_NAME == ''){
+            payname = $scope.repairData.companyData.NAME;
+        }else{
+            payname = $scope.repairData.CU_NAME;
+        }  
+        var sub_url = $rootScope.printUrl+"?payname="+payname+"&money="+money+"&plateNum="+$scope.repairData.plateNum+"&engineNumber="+$scope.repairData.engineNumber+"&statusname="+$scope.repairData.statusname+"&saleUserName="+$scope.repairData.saleUserName+"&begindate="+$scope.repairData.begindate+"&repairId="+$scope.repairData.ID+"&desc="+$scope.repairData.RE_DESC+"&row="+row+str;
         window.open(sub_url, '_blank')
     }
 
