@@ -60,7 +60,7 @@ angular.module('sbAdminApp').controller('ContractListCtrl', ['$scope','Init','Mo
                 "targets": -1,
                 "data": null,
                 "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                    $(nTd).html("<div class='btn-group-vertical'><button type='button' class='btn btn-primary btn-sm dropdown-toggle' data-toggle='dropdown' id='a_check'>查看</button></div>");
+                    $(nTd).html("<div style='display:flex;justify-content:space-around'><button type='button' class='btn btn-primary btn-sm'  id='a_check'>卖/租流程</button><button type='button' class='btn btn-success btn-sm'  id='backCarId'>还车流程</button></div>");
                 }
             }
         ],
@@ -115,12 +115,23 @@ angular.module('sbAdminApp').controller('ContractListCtrl', ['$scope','Init','Mo
 
     });
 
-    //查看详情
+    //卖租车
     $('#contractTable tbody').on('click', '#a_check', function () {
         var row = table.row($(this).parents('tr'));
         var data = row.data();
         var id = data.ID;
         $state.go("dashboard.contractIndex.contractDetailList",
+        {
+            "id":id,
+            "from":"dashboard.contractIndex.contractList"
+        });
+    });
+    //还车
+    $('#contractTable tbody').on('click', '#backCarId', function () {
+        var row = table.row($(this).parents('tr'));
+        var data = row.data();
+        var id = data.ID;
+        $state.go("dashboard.contractIndex.contractDetailForBackList",
         {
             "id":id,
             "from":"dashboard.contractIndex.contractList"

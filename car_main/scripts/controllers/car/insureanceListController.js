@@ -63,7 +63,7 @@ angular.module('sbAdminApp').controller('InsureanceListCtrl', ['$scope','Init','
                         $(nTd).css('background-color','#22D0C6')
                     }
                     
-                    $(nTd).html("<input  value='"+sData+"'>");
+                    $(nTd).html("<input placeholder='yyyy-mm-dd'  value='"+sData+"'>");
                 }
             },
             {
@@ -90,7 +90,7 @@ angular.module('sbAdminApp').controller('InsureanceListCtrl', ['$scope','Init','
                     if(oData.bus_remark == '2'){
                         $(nTd).css('background-color','#22D0C6')
                     }
-                    $(nTd).html("<input value='"+sData+"'>");
+                    $(nTd).html("<input placeholder='yyyy-mm-dd' value='"+sData+"'>");
                 }
             },  
             {
@@ -160,8 +160,17 @@ angular.module('sbAdminApp').controller('InsureanceListCtrl', ['$scope','Init','
         param.ENGINE_NUMBER = data.ENGINE_NUMBER
         param.FORCE_IS = $($(row.node()).find("input")[0]).val()
         param.FORCE_DATE = $($(row.node()).find("input")[1]).val()
+        var patrn=/^(\d{4})(-)(\d{2})(-)(\d{2})$/;
+        if (param.FORCE_DATE != '' && !patrn.exec(param.FORCE_DATE)){
+            $scope.open("日期格式错误！");
+            return;
+        }
         param.BUS_IS = $($(row.node()).find("input")[2]).val()
         param.BUS_DATE = $($(row.node()).find("input")[3]).val()
+        if (param.BUS_DATE != '' && !patrn.exec(param.BUS_DATE)){
+            $scope.open("日期格式错误！");
+            return;
+        }
         Init.iwbhttp('/car/updateInsureance', {obj:param}, function(data,header,config,status){
             if(data.resFlag == 0){
                 $scope.open(data.msg);

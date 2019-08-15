@@ -1,5 +1,5 @@
 'use strict';
-angular.module('sbAdminApp').controller('YearchecklistCtrl', ['$scope','Init','Modal','$state','CheckBrowser','CheckParam', function ($scope,Init,Modal,$state,CheckBrowser,CheckParam) {
+angular.module('sbAdminApp').controller('ReplaceListCtrl', ['$scope','Init','Modal','$state','CheckBrowser','CheckParam', function ($scope,Init,Modal,$state,CheckBrowser,CheckParam) {
     CheckBrowser.check();
     $.extend( $.fn.dataTable.defaults, {
         searching: true,
@@ -25,36 +25,28 @@ angular.module('sbAdminApp').controller('YearchecklistCtrl', ['$scope','Init','M
     //table当前数据（页面数据页数等）
     $scope.pageData = "";
     $scope.param = {};
-    var table = $('#repairTable').DataTable({
+    var table = $('#contractTable').DataTable({
         "serverSide": true,
         "columns": [
             {
+                "visible": false,
                 "data": "ID"
             },
             {
+                "data": "CO_ID"
+            },
+            {
+                "data": "PLATE_NUM_ORI"
+            },
+            {
                 "data": "PLATE_NUM"
-            },
-            {
-                "data": "FRAME_NUMBER"
-            },
-            {
-                "data": "DRIVER_YEAR",
-                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                    $(nTd).html("<input value='"+sData+"'>");
-                }
-            },
-            {
-                "data": "DRIVER_MONTH"
-            },
-            {
-                "data": "DRIVER_DATE"
             },
             {
                 "class": "mytable-center",
                 "targets": -1,
                 "data": null,
                 "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                    $(nTd).html("<div class='btn-group-vertical'><button type='button' class='btn btn-primary btn-sm dropdown-toggle' data-toggle='dropdown' id='a_check'>保存</button></div>");
+                    $(nTd).html("<div ><button type='button' class='btn btn-primary btn-sm'  id='a_check'>查看</button></div>");
                 }
             }
         ],
@@ -66,7 +58,7 @@ angular.module('sbAdminApp').controller('YearchecklistCtrl', ['$scope','Init','M
                 $scope.searchContent = table.search();
             }
             $scope.param.searchContent = CheckParam.checkSql($scope.searchContent);
-            Init.iwbhttp('/car/carListForYearCheck', $scope.param, function(data,header,config,status){
+            Init.iwbhttp('/car/replaceCarList', $scope.param, function(data,header,config,status){
                 var returnData = {};
                 if(data.resFlag == 0){
                     returnData.recordsTotal = data.totalRow;//返回数据全部记录
@@ -103,39 +95,23 @@ angular.module('sbAdminApp').controller('YearchecklistCtrl', ['$scope','Init','M
         "fixedColumns":   {
             leftColumns:0,
             rightColumns: 1
-        }
+        },
+
+        "dom": 'Zlfrtip',
+
     });
 
-    //查看详情
-    $('#repairTable tbody').on('click', '#a_check', function () {
+    //卖租车
+    $('#contractTable tbody').on('click', '#a_check', function () {
         var row = table.row($(this).parents('tr'));
-        console.log($(row.node()).find("input").val())
-        var input_val = $(row.node()).find("input").val()
         var data = row.data();
-        var param = {}
-        param.ID = data.ID
-        param.PLATE_NUM = data.PLATE_NUM
-        param.ENGINE_NUMBER = data.ENGINE_NUMBER
-        param.DRIVER_YEAR = input_val
-        Init.iwbhttp('/car/updateCarDriverYear', {obj:param}, function(data,header,config,status){
-            if(data.resFlag == 0){
-                $scope.open(data.msg);
-            }else{
-                $scope.open(data.msg);
-            }
-        },function(data,header,config,status){
+        $state.go("dashboard.replaceIndex.replaceDetailList",
+        {
+            "obj":data,
+            "from":"dashboard.replaceIndex.replaceList"
         });
     });
-
-    $scope.add = function(){
-        $state.go("dashboard.repairIndex.repairDetailList",
-        {
-            "repairId":"",
-            "ifAdd":"0",
-            "from":"dashboard.planIndex.planList"
-        });
-    }
-
+    
     //提示modal弹框
     $scope.open = function (content,data) {
         url = 'views/modal/promptModal.html';

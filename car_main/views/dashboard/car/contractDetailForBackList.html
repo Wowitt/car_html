@@ -1,0 +1,140 @@
+<div style="padding-bottom: 20px;">
+        <div class="row">
+            <!-- <div class="col-lg-12">
+                <h1 class="page-header">维修单</h1>
+            </div> -->
+            <div class="myHeader">
+                <h1>合同-还车流程</h1>
+                <div class="myaction" ng-click="back()">返回</div>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+    
+        <!-- /.panel -->
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4" >公司名称:{{contract.CONTRACT_NAME}}</div>
+                <div class="col-md-4" ng-if="contract.CU_TYPE == '1'">公司名称:{{contract.CU_EP_NAME}}</div>
+            </div>
+            <div class="row" style="margin-top:6px;">
+                <div class="col-md-4">客户名称:{{contract.CU_NAME}}</div>
+                <div class="col-md-4">联系电话:{{contract.CU_PHONE}}</div>
+                <div class="col-md-4">销售员:{{contract.SALE_USER_NAME}}</div>
+            </div>
+            <div class="row" style="margin-top:6px;">
+                <div class="col-md-4">客户来源:{{contract.CU_SOURCE}}</div>
+                <div class="col-md-4">客户需求:{{contract.TYPE}}</div>
+                <div class="col-md-4">是否开票:{{contract.INVOICE}}</div>
+            </div>
+            <div class="row" style="margin-top:6px;">
+                <div class="col-md-4">客户行业:{{contract.CU_WORK}}</div>
+                <div class="col-md-4">付款期:{{contract.PAY_PERIOD}}</div>
+            </div>
+            <div class="row" style="margin-top:6px;">
+                <div class="col-md-4">总价数:{{contract.UNIT_PRICE_SUM}}元</div>
+                <div class="col-md-4">优惠:{{contract.DISCOUNT}}元</div>
+            </div>
+            <div class="row" style="margin-top:6px;">
+                <div class="col-md-4">租期:{{contract.RENT_MONTH}}个月</div>
+                <div class="col-md-4">签订日期:{{contract.SIGN_DATE}}</div>
+                <div class="col-md-4">交车日期:{{contract.DELIVER_DATE}}</div>
+            </div>
+            <div class="row" style="margin-top:6px;">
+                <div class="col-md-12">备注:{{contract.REMARK}}</div>
+            </div>
+            <div class="row" ng-style="func_class">
+                <div class="col-md-3">顾客实际需求:</div>
+                <div class="col-md-2">
+                    <button class="btn btn-default btn-xs" ng-click="openCarTableRead();" >车辆信息</button>
+                </div>
+            </div>
+            <div class="dataTable_wrapper" style="margin-top:10px;">
+                <label>缴费记录</label>
+                <table class="table table-bordered table-hover" id="detailListTable">
+                    <tr ng-model="carFlag">
+                    </tr>
+                    <tr>
+                        <th>收据</th>
+                        <th>收费项</th>
+                        <th>日期</th>
+                        <th>金额</th>
+                        <th>付款方式</th>
+                    </tr>
+                    <tr ng-repeat="x in financeFlowList">
+                        <th class="">{{x.RECEIPT_NO}}</th>
+                        <th class="">{{x.BIZ_NAME}}</th>
+                        <th class="">{{x.actiondate}}</th>
+                        <th class="">{{x.MONEY}}</th>
+                        <th class="">{{x.RECEIVER_PayTitle}}</th>
+                    </tr>
+                </table>
+            </div>
+            <div class="row" style="display: flex;border-bottom: 1px solid #eee;margin-top:6px;"></div>
+            <div class="row" style="margin-top:6px;">
+                <h5>收车</h5>
+            </div>
+            <div style="margin-top:6px;display:flex;align-items: center;">
+                <label class="control-label">收车日期</label> 
+                <label class="control-label" style="margin-left:16px;">{{contractBack.backdate}}</label>
+            </div>
+            <div style="margin-top:6px;display:flex;align-items: center;justify-content: space-between;">
+                <label class="control-label">违章情况</label>
+                <div class="input-group  ">
+                    <span class="input-group-addon">违章</span>
+                    <input type="text" type="number"  ng-model="contractBack.BREAKRULES_NUM" class="form-control">
+                    <span class="input-group-addon">条</span>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">违章扣</span>
+                    <input type="text" type="number" ng-model="contractBack.BREAKRULES_SCORE" class="form-control">
+                    <span class="input-group-addon">分</span>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">应扣多少钱</span>
+                    <input type="text" type="number" step='0.01' ng-model="contractBack.BREAKRULES_MONEY"  class="form-control">
+                    <span class="input-group-addon">元</span>
+                </div>
+            </div>
+            <div style="margin-top:20px;margin-bottom:20px;" ng-if="roleIds.indexOf('CARMANAGE') >= 0">
+                <button class="btn btn-default" ng-click="openCarTableBack();" >车辆信息</button>
+                <button class="btn btn-default" ng-click="collectSub(1);" >{{$root.userName}}确认提交</button>
+            </div>
+            <div style="margin-top:6px;display:flex;align-items: center;justify-content: space-between;">
+                <label class="control-label">车辆外况</label>
+                <input type="text" style="width: 56%" class="form-control" ng-model="contractBack.DAMAGE" placeholder="请输入车辆外况">
+                <div class="input-group">
+                    <span class="input-group-addon">应扣多少钱</span>
+                    <input type="text" type="number" step='0.01' ng-model="contractBack.DAMAGE_MONEY" class="form-control">
+                    <span class="input-group-addon">元</span>
+                </div>
+            </div>
+            <div style="margin-top:20px;" ng-if="roleIds.indexOf('REPAIR') >= 0">
+                <button class="btn btn-default" ng-click="openCarTableBack();" >车辆信息</button>
+                <button class="btn btn-default" ng-click="collectSub(2);" >{{$root.userName}}确认提交</button>
+            </div>
+            <div class="row" style="margin-top:6px;">
+                <h5>财务</h5>
+            </div>
+            <div style="margin-top:6px;display:flex;align-items: center;justify-content: space-between;">
+                <label class="control-label">日期</label>
+                <input  ng-model="financeFlow.actiondate" id="financeFlow_actiondate" type="text" readonly="readonly"
+                    class="form-control Wdate" style="height: 33px;width:20%;display:inline;"
+                    onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"/>
+                <label  class="control-label">金额</label>
+                <input  class="form-control" style="width:20%;" ng-model="financeFlow.MONEY" type="number" step='0.01' placeholder="">
+                <label class="control-label">付款方</label>
+                <select class="form-control" style="width:20%;"  ng-model="companyModeSelected" ng-options="x.NAME for x in companyModeList"></select>
+                <label class="control-label">付款方式</label>
+                <select id="PAYER__select" style="width:20%;"  ng-model="financeFlow.PAYER_PayTitle"  class="form-control" >
+                    <option value="">请选择</option>
+                    <option ng-repeat="item in companyModeSelected.sonList" value="{{item.PayTitle}}">{{item.PayTitle}}</option>
+                </select>
+            </div>
+            <div style="margin-top:20px;" ng-if="roleIds.indexOf('FINANCE') >= 0">
+                <button class="btn btn-default" ng-click="financeSub();" ng-disabled="contract.STATUS == '5'">{{$root.userName}}确认提交</button>
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+    

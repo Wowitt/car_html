@@ -4,16 +4,35 @@ angular.module('sbAdminApp').controller('FinanceFlowModalCtrl', ['$scope','$moda
 	$scope.content = content;
 	//传入参数
     $scope.parm = parm;
-    $scope.payTypeList = parm.payTypeList;
+    $scope.contract = parm.contract;
     $scope.financeFlow = {
         ID:"",
         BIZ_ID:$scope.parm.BIZ_ID,
         RECEIPT_NO:"",
         BIZ_NAME:"",
         actiondate:"",
-        MONEY:"",
-        TYPE:"",
-    }
+		MONEY:"",
+		RECEIVER_ID:"",
+		RECEIVER_NAME:"",
+		RECEIVER_PayTitle:"",
+		direction:"收",
+		SOURCE:"web",
+		PAYER_ID:$scope.contract.CU_ID,
+		PAYER_NAME:$scope.contract.TYPE=='0' ? $scope.contract.CU_NAME : $scope.contract.CU_EP_NAME,
+	}
+	$scope.companyModeList = []
+	$scope.companyModeSelected = {}
+	$scope.init = function(){
+		//initFinanceFlow
+		Init.iwbhttp("/car/initFinanceFlow", {}, function (data, header, config, status) {
+			if(data.resFlag == '0'){
+				$scope.companyModeList = data.companyPayModeList
+			}
+			// console.log($scope.companyModeList)
+		}, function (data, header, config, status) {
+		});
+	}
+	$scope.init()
 	//弹框参数
 	var resolve = {	};
 	var url = "";
@@ -37,10 +56,12 @@ angular.module('sbAdminApp').controller('FinanceFlowModalCtrl', ['$scope','$moda
             $scope.open("金额不能为空！");
 			return;
         }
-        if(!$scope.financeFlow.TYPE ||$scope.financeFlow.TYPE == 'null' || $scope.financeFlow.TYPE == null || $scope.financeFlow.TYPE == ''){
-            $scope.open('请选择付款方式')
+        if(!$scope.financeFlow.RECEIVER_PayTitle ||$scope.financeFlow.RECEIVER_PayTitle == 'null' || $scope.financeFlow.RECEIVER_PayTitle == null || $scope.financeFlow.RECEIVER_PayTitle == ''){
+            $scope.open('请选择收款方式')
             return false;
-        }
+		}
+		$scope.financeFlow.RECEIVER_ID = $scope.companyModeSelected.ID
+		$scope.financeFlow.RECEIVER_NAME = $scope.companyModeSelected.NAME
 		Init.iwbhttp("/car/saveFinanceFlow", {parm:$scope.financeFlow}, function (data, header, config, status) {
 			$scope.open(data.msg);
 			if($scope.closeFlag = true){

@@ -1,0 +1,114 @@
+<div>
+        <div class="row">
+            <!-- <div class="col-lg-12">
+                <h1 class="page-header">维修单</h1>
+            </div> -->
+            <div class="myHeader">
+                <h1>零件入库流水单</h1>
+                <div class="myaction" ng-click="back()">返回</div>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+        <!-- /.panel -->
+        <div class="row" >
+            <div class="col-lg-12">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label>流水号:</label>
+                        <label>{{dataFlow.ID}}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label>零件库</label>
+                        <select  ng-model="dataFlow.NAME"  class="form-control" >
+                            <option value="">请选择</option>
+                            <option ng-repeat="item in componentList" value="{{item.NAME}}">{{item.NAME}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label>供货商</label>
+                        <input class="form-control"  type="text" ng-model="dataFlow.SUPPLIER" >
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label>进价</label>
+                        <input class="form-control" type="number" step='0.01'  ng-model="dataFlow.COST_PRICE" >
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label>售价</label>
+                        <input class="form-control"  type="number" step='0.01' ng-model="dataFlow.SALE_PRICE" >
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label>数量</label>
+                        <input class="form-control"  type="number" step='0.01' ng-model="dataFlow.NUM" >
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-12">
+                <div ng-style="func_class">
+                    <div>
+                        <label>结算</label>
+                    </div>
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">收据</label>
+                            <div class="col-sm-3">
+                            <input  class="form-control" ng-model="financeFlow.RECEIPT_NO"  placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-sm-2 control-label">日期</label>
+                            <div class="col-sm-3">
+                                <input  ng-model="financeFlow.actiondate" id="financeFlow_actiondate" type="text" readonly="readonly"
+                                class="form-control Wdate" style="height: 33px;display:inline;"
+                                onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"/>
+                            </div>
+                            <label  class="col-sm-2 control-label">金额</label>
+                            <div class="col-sm-3">
+                                <input  class="form-control" ng-model="financeFlow.MONEY" type="number" step='0.01' placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">付款方</label>
+                            <div class="col-sm-3">
+                                <select class="form-control" ng-model="companyModeSelected_Pay" ng-options="x.NAME for x in companyModeList"></select>
+                            </div>
+                            <label class="col-sm-2 control-label">付款方式</label>
+                            <div class="col-sm-3">
+                                <select id="PAYER__select" ng-model="financeFlow.PAYER_PayTitle"  class="form-control" >
+                                    <option value="">请选择</option>
+                                    <option ng-repeat="item in companyModeSelected_Pay.sonList" value="{{item.PayTitle}}">{{item.PayTitle}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div style="margin-top:20px;margin-bottom:20px;">
+                    <button class="btn btn-primary" ng-click="save();" id="saveBtn">保存</button>
+                </div>  
+            </div>
+            <!-- /.col-lg-4 -->
+        </div>
+        <!-- /.row -->
+    </div>
+    

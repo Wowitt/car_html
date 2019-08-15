@@ -731,7 +731,108 @@ iwoboApp.config(['$httpProvider', '$stateProvider', '$urlRouterProvider', '$ocLa
                             'scripts/controllers/car/carTableModalController.js',
                             'scripts/controllers/car/carTableDeliverModalController.js',
                             'scripts/controllers/car/carTableReadModalController.js',
+                            'scripts/controllers/car/createWordModalController.js',
                             'scripts/controllers/car/contractDetailListController.js',
+                        ]
+                    })
+                }
+            }
+        })
+        .state('dashboard.contractIndex.contractDetailForBackList', {
+            url: '/contractDetailForBackList',
+            controller: 'ContractDetailForBackListCtrl',
+            templateUrl: 'views/dashboard/car/contractDetailForBackList.html',
+            params: {
+                "id": null,
+                "from":null
+            },
+            resolve: {
+                loadMyFiles: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'sbAdminApp',
+                        files: [
+                            'lib/dataTables/dataTables.bootstrap.min.css',
+                            'lib/dataTables/dataTables.bootstrap.min.js',
+                            'lib/dataTables/jquery.dataTables.min.css',
+                            'lib/dataTables/jquery.dataTables.min.js',
+                            'scripts/directives/dateTools/WdatePicker.js',
+                            'scripts/controllers/modal/promptModalController.js',
+                            'scripts/controllers/modal/confirmModalController.js',
+                            'scripts/controllers/car/financeFlowModalController.js',
+                            'scripts/controllers/car/carTableModalController.js',
+                            'scripts/controllers/car/carTableBackModalController.js',
+                            'scripts/controllers/car/carTableDeliverModalController.js',
+                            'scripts/controllers/car/carTableReadModalController.js',
+                            'scripts/controllers/car/contractDetailForBackListController.js',
+                        ]
+                    })
+                }
+            }
+        })
+        .state('dashboard.replaceIndex', {
+            url: '/replaceIndex',
+            controller: 'ReplaceIndexCtrl',
+            templateUrl: 'views/dashboard/car/replaceIndex.html',
+            resolve: {
+                loadMyFiles: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'sbAdminApp',
+                        files: [
+                            'lib/dataTables/dataTables.bootstrap.min.css',
+                            'lib/dataTables/dataTables.bootstrap.min.js',
+                            'lib/dataTables/jquery.dataTables.min.css',
+                            'lib/dataTables/jquery.dataTables.min.js',
+                            'scripts/controllers/car/replaceIndexController.js'
+                        ]
+                    })
+                }
+            }
+        })
+        .state('dashboard.replaceIndex.replaceList', {
+            url: '/replaceList',
+            controller: 'ReplaceListCtrl',
+            templateUrl: 'views/dashboard/car/replaceList.html',
+            resolve: {
+                loadMyFiles: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'sbAdminApp',
+                        files: [
+                            'lib/dataTables/dataTables.bootstrap.min.css',
+                            'lib/dataTables/dataTables.bootstrap.min.js',
+                            'lib/dataTables/jquery.dataTables.min.css',
+                            'lib/dataTables/jquery.dataTables.min.js',
+                            'scripts/controllers/modal/promptModalController.js',
+                            'scripts/controllers/car/replaceListController.js'
+                        ]
+                    })
+                }
+            }
+        })
+        .state('dashboard.replaceIndex.replaceDetailList', {
+            url: '/replaceDetailList',
+            controller: 'ReplaceDetailListCtrl',
+            templateUrl: 'views/dashboard/car/replaceDetailList.html',
+            params: {
+                "obj": null,
+                "from":null
+            },
+            resolve: {
+                loadMyFiles: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'sbAdminApp',
+                        files: [
+                            'lib/dataTables/dataTables.bootstrap.min.css',
+                            'lib/dataTables/dataTables.bootstrap.min.js',
+                            'lib/dataTables/jquery.dataTables.min.css',
+                            'lib/dataTables/jquery.dataTables.min.js',
+                            'scripts/directives/dateTools/WdatePicker.js',
+                            'scripts/controllers/modal/promptModalController.js',
+                            'scripts/controllers/modal/confirmModalController.js',
+                            'scripts/controllers/car/financeFlowModalController.js',
+                            'scripts/controllers/car/carTableReplaceModalController.js',
+                            'scripts/controllers/car/carTableDeliverModalController.js',
+                            'scripts/controllers/car/carTableReadModalController.js',
+                            'scripts/controllers/car/replaceDetailListController.js',
                         ]
                     })
                 }
@@ -1043,9 +1144,76 @@ iwoboApp.config(['$httpProvider', '$stateProvider', '$urlRouterProvider', '$ocLa
                             'lib/dataTables/dataTables.bootstrap.min.js',
                             'lib/dataTables/jquery.dataTables.min.css',
                             'lib/dataTables/jquery.dataTables.min.js',
+                            'scripts/directives/dateTools/WdatePicker.js',
                             'scripts/controllers/modal/promptModalController.js',
                             'scripts/controllers/modal/confirmModalController.js',
                             'scripts/controllers/car/repairDetailListController.js'
+                        ]
+                    })
+                }
+            }
+        })
+        .state('dashboard.repairFlowIndex', {
+            url: '/repairFlowIndex',
+            controller: 'RepairFlowIndexCtrl',
+            templateUrl: 'views/dashboard/car/repairFlowIndex.html',
+            resolve: {
+                loadMyFiles: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'sbAdminApp',
+                        files: [
+                            'lib/dataTables/dataTables.bootstrap.min.css',
+                            'lib/dataTables/dataTables.bootstrap.min.js',
+                            'lib/dataTables/jquery.dataTables.min.css',
+                            'lib/dataTables/jquery.dataTables.min.js',
+                            'scripts/controllers/car/repairFlowIndexController.js'
+                        ]
+                    })
+                }
+            }
+        })
+        .state('dashboard.repairFlowIndex.repairFlowList', {
+            url: '/repairFlowList',
+            controller: 'RepairFlowListCtrl',
+            templateUrl: 'views/dashboard/car/repairFlowList.html',
+            resolve: {
+                loadMyFiles: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'sbAdminApp',
+                        files: [
+                            'lib/dataTables/dataTables.bootstrap.min.css',
+                            'lib/dataTables/dataTables.bootstrap.min.js',
+                            'lib/dataTables/jquery.dataTables.min.css',
+                            'lib/dataTables/jquery.dataTables.min.js',
+                            'scripts/controllers/modal/promptModalController.js',
+                            'scripts/controllers/car/repairFlowListController.js'
+                        ]
+                    })
+                }
+            }
+        })
+        .state('dashboard.repairFlowIndex.repairFlowDetailList', {
+            url: '/repairFlowDetailList',
+            controller: 'RepairFlowDetailListCtrl',
+            templateUrl: 'views/dashboard/car/repairFlowDetailList.html',
+            params: {
+                "flowId": null,
+                "ifAdd": null,
+                "from":null
+            },
+            resolve: {
+                loadMyFiles: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'sbAdminApp',
+                        files: [
+                            'lib/dataTables/dataTables.bootstrap.min.css',
+                            'lib/dataTables/dataTables.bootstrap.min.js',
+                            'lib/dataTables/jquery.dataTables.min.css',
+                            'lib/dataTables/jquery.dataTables.min.js',
+                            'scripts/directives/dateTools/WdatePicker.js',
+                            'scripts/controllers/modal/promptModalController.js',
+                            'scripts/controllers/modal/confirmModalController.js',
+                            'scripts/controllers/car/repairFlowDetailListController.js'
                         ]
                     })
                 }
@@ -1615,6 +1783,9 @@ iwoboApp.run(['$state', '$rootScope', 'localStorageService', '$modal', '$log', '
     $rootScope.baseUrl = 'http://localhost:9002/api';
     $rootScope.printUrl = 'http://localhost:9002/car/print/index.html';
     $rootScope.parkUrl = 'http://localhost:9002/car/park/index.html';
+    // $rootScope.baseUrl = 'http://39.96.42.117:9000/api';
+    // $rootScope.printUrl = 'http://39.96.42.117:9000/car/print/index.html';
+    // $rootScope.parkUrl = 'http://39.96.42.117:9000/car/park/index.html';
     // $rootScope.baseUrl = 'http://192.168.1.120:9002/api';
     //$rootScope.baseUrl = 'http://60.30.64.249:7080/rd_2nd';
     $rootScope.websocketUrlController = 'ws://localhost:9002/mywebsocket';

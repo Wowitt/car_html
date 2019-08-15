@@ -69,7 +69,7 @@ angular.module('sbAdminApp').factory('Init', ['$http','$rootScope','localStorage
             data['DEVICE_UUID'] = $rootScope.uuid;
             data['CURRENT_URL'] =  $location.url();
             data['USER_ID'] = localStorageService.get('userId');
-            console.log("params="+JSON.stringify(data));
+            // console.log("params="+JSON.stringify(data));
             $http({
                 url:$rootScope.baseUrl+$rootScope.baseUrlPath+url,
                 data: "params="+JSON.stringify(data),  // pass in data as strings
@@ -81,7 +81,7 @@ angular.module('sbAdminApp').factory('Init', ['$http','$rootScope','localStorage
                 localStorageService.set('WJWT',data.WJWT);
                 userInit(data);
                 //sessionStorage.setItem('IWBSESSION',data.IWBSESSION);
-                console.log(data);
+                // console.log(data);
                 if(data.IWBSESSION == null || angular.equals("",data.IWBSESSION)){
                     if(!angular.equals("/login/epLogin", url) && !angular.equals("/login/adminLogin", url) && !angular.equals("/login/epAdminLogin", url) && !angular.equals("/login/epRegister", url) && !angular.equals("/login/getCheckCode", url) && !angular.equals("/login/getCheckCodeNum", url)){
                         //console.log("url111=====>"+url);

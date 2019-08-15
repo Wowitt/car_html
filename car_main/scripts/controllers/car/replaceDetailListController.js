@@ -2,7 +2,7 @@
  * Created by John on 2016/12/21.
  */
 'use strict';
-angular.module('sbAdminApp').controller('ContractDetailListCtrl', ['$rootScope', '$scope', 'Init', 'Modal', 'localStorageService', '$timeout', '$interval', 'CheckBrowser','$state','$stateParams', function ($rootScope, $scope, Init, Modal, localStorageService, $timeout, $interval, CheckBrowser,$state,$stateParams) {
+angular.module('sbAdminApp').controller('ReplaceDetailListCtrl', ['$rootScope', '$scope', 'Init', 'Modal', 'localStorageService', '$timeout', '$interval', 'CheckBrowser','$state','$stateParams', function ($rootScope, $scope, Init, Modal, localStorageService, $timeout, $interval, CheckBrowser,$state,$stateParams) {
     CheckBrowser.check();
     $scope.func_class = {
         "display":"flex",
@@ -23,15 +23,16 @@ angular.module('sbAdminApp').controller('ContractDetailListCtrl', ['$rootScope',
         "margin-top": "6px",
         "padding":"10px",
     }
-    var id = $stateParams.id;
-    var par = {id: id};
+    var obj = $stateParams.obj
+    console.log("obj==>>",obj)
+    var id = obj.ID;
+    var CO_ID = obj.CO_ID;
+    var par = {id: CO_ID};
     $scope.contract = {};
     $scope.contractFinance = {};
     $scope.contractDeliver = {}
-    $scope.agentList = []
-    $scope.payPeriodList = []
-    $scope.payTypeList = []
-    $scope.cucoPricelist = []
+    $scope.replaceCar = {}
+    $scope.carTable = {}
     $scope.roleIds = localStorageService.get("roleIds");
     
     //弹框参数
@@ -48,32 +49,46 @@ angular.module('sbAdminApp').controller('ContractDetailListCtrl', ['$rootScope',
                 if(data.cucoPricelist && data.cucoPricelist != null){
                     $scope.cucoPricelist = data.cucoPricelist;
                 }
-                if(data.financeFlowList && data.financeFlowList != null){
-                    $scope.financeFlowList = data.financeFlowList;
-                }
             }        
         }, function (data, header, config, status) {
         });
     }
     $scope.init_data = function() {
-        Init.iwbhttp('/car/contractDetailWebInit',  {}, function(data,header,config,status){
-            if(data.resFlag == '0'){
-                $scope.agentList = data.agentList
-                $scope.payPeriodList = data.payPeriodList
-                $scope.payTypeList = data.payTypeList
+        var par = {}
+        par = {obj:obj}
+        Init.iwbhttp("/car/replaceCarInfo", par, function (data, header, config, status) {
+			if(data.resFlag == '0'){
+                $scope.replaceCar = data.replaceCar
+                $scope.carTable = data.carTable
+                if(data.financeFlowList && data.financeFlowList != null){
+                    $scope.financeFlowList = data.financeFlowList;
+                }
                 $scope.init();
-            }
-        },function(data,header,config,status){
-        });
+			}
+			// console.log($scope.companyModeList)
+		}, function (data, header, config, status) {
+		});
     };
     $scope.init_data();
     
-    $scope.financeSave = function(){
-        $scope.contractFinance['ID'] = $scope.contract.ID;
-        $scope.contractFinance['STATUS'] = 0;
+    $scope.repairSave = function(){
+        $scope.replaceCar.actiondate= $('#replaceCar_actiondate').val();
+        if(!$scope.carTable.DRIVER_NUM ||$scope.carTable.DRIVER_NUM == 'null' || $scope.carTable.DRIVER_NUM == null || $scope.carTable.DRIVER_NUM == ''){
+            $scope.open('原车里程数不能为空')
+            return false;
+        }
+        if(!$scope.replaceCar.PLATE_NUM ||$scope.replaceCar.PLATE_NUM == 'null' || $scope.replaceCar.PLATE_NUM == null || $scope.replaceCar.PLATE_NUM == ''){
+            $scope.open('替换车牌照不能为空')
+            return false;
+        }
+        if(!$scope.replaceCar.DRIVER_NUM ||$scope.replaceCar.DRIVER_NUM == 'null' || $scope.replaceCar.DRIVER_NUM == null || $scope.replaceCar.DRIVER_NUM == ''){
+            $scope.open('替换车里程数不能为空')
+            return false;
+        }
         var par = {}
-        par.contractFinance = $scope.contractFinance;
-        Init.iwbhttp('/car/saveContractFinance', par, function (data, header, config, status) {
+        par.replaceCar = $scope.replaceCar
+        par.carTable = $scope.carTable
+        Init.iwbhttp('/car/saveReplaceOfRepair', par, function (data, header, config, status) {
             if(data.resFlag == '0'){
                 $scope.open(data.msg)
             } else{
@@ -83,51 +98,10 @@ angular.module('sbAdminApp').controller('ContractDetailListCtrl', ['$rootScope',
         });
     }
 
-    $scope.financeSub = function(){
-        if(!$scope.contractFinance.IF_CONTRACT ||$scope.contractFinance.IF_CONTRACT == 'null' || $scope.contractFinance.IF_CONTRACT == null || $scope.contractFinance.IF_CONTRACT == ''){
-            $scope.open('是否签订合同')
-            return false;
-        }
-        if($scope.financeFlowList.length < 1){
-            $scope.open('请输入收款信息')
-            return false;
-        }
-        $scope.contractFinance['ID'] = $scope.contract.ID;
-        $scope.contractFinance['STATUS'] = 1;
-        var par = {}
-        par.contractFinance = $scope.contractFinance;
-
-        var msg = "一旦提交无法再次修改,请确认?";
-        url = 'views/modal/confirmModal.html';
-        ctrlName = 'ConfirmModalCtrl';
-        resolve = {
-            content: function () {
-                return msg;
-            },
-            data: function () {
-                return par;
-            }
-        };
-        var modalInstance = Modal.modal(url, ctrlName, resolve, function (returnData) {
-            Init.iwbhttp('/car/saveContractFinance', returnData, function (data, header, config, status) {
-                if(data.resFlag == '0'){
-                    $scope.contractFinance['STATUS'] = 1;
-                    $scope.open(data.msg)
-                } else{
-                    $scope.contractFinance['STATUS'] = 0;
-                    $scope.open(data.msg)
-                }       
-            }, function (data, header, config, status) {
-            });
-        }, function () {
-
-        });
-    }
-
     $scope.carManageSub = function(){
         var par = {}
-        par.contractCarManage = {
-            ID:$scope.contract.ID,
+        par.replaceCarManage = {
+            ID:obj.ID,
             CARMANAGE_STATUS:"1"
         };
         var msg = "一旦提交无法再次修改,请确认?";
@@ -142,45 +116,12 @@ angular.module('sbAdminApp').controller('ContractDetailListCtrl', ['$rootScope',
             }
         };
         var modalInstance = Modal.modal(url, ctrlName, resolve, function (returnData) {
-            Init.iwbhttp('/car/saveContractCarManage', returnData, function (data, header, config, status) {
+            Init.iwbhttp('/car/saveReplaceCarManage', returnData, function (data, header, config, status) {
                 if(data.resFlag == '0'){
-                    $scope.contract['CARMANAGE_STATUS'] = 1;
+                    $scope.replaceCar['CARMANAGE_STATUS'] = 1;
                     $scope.open(data.msg)
                 } else{
-                    $scope.contract['CARMANAGE_STATUS'] = 0;
-                    $scope.open(data.msg)
-                }
-            }, function (data, header, config, status) {
-            });
-        }, function () {
-
-        });
-    }
-
-    $scope.deliverSub = function(){
-        var par = {}
-        par.contractDeliver = {
-            ID:$scope.contract.ID,
-            DELIVER_STATUS:"1"
-        };
-        var msg = "一旦提交无法再次修改,请确认?";
-        url = 'views/modal/confirmModal.html';
-        ctrlName = 'ConfirmModalCtrl';
-        resolve = {
-            content: function () {
-                return msg;
-            },
-            data: function () {
-                return par;
-            }
-        };
-        var modalInstance = Modal.modal(url, ctrlName, resolve, function (returnData) {
-            Init.iwbhttp('/car/saveContractDeliver', returnData, function (data, header, config, status) {
-                if(data.resFlag == '0'){
-                    $scope.contract['DELIVER_STATUS'] = 1;
-                    $scope.open(data.msg)
-                } else{
-                    $scope.contract['DELIVER_STATUS'] = 0;
+                    $scope.replaceCar['CARMANAGE_STATUS'] = 0;
                     $scope.open(data.msg)
                 }
             }, function (data, header, config, status) {
@@ -194,7 +135,7 @@ angular.module('sbAdminApp').controller('ContractDetailListCtrl', ['$rootScope',
         url = 'views/dashboard/car/financeFlowModal.html';
         ctrlName = 'FinanceFlowModalCtrl';
         var parm = {
-            BIZ_ID:$scope.contract.ID,
+            BIZ_ID:obj.ID,
             contract:$scope.contract,
         };
         resolve = {
@@ -212,29 +153,6 @@ angular.module('sbAdminApp').controller('ContractDetailListCtrl', ['$rootScope',
         }, function () {
 
         });
-    }  
-
-    $scope.createWordModel = function (){
-        url = 'views/dashboard/car/createWordModal.html';
-        ctrlName = 'CreateWordModalCtrl';
-        var parm = {
-            BIZ_ID:$scope.contract.ID,
-            contract:$scope.contract,
-            contractFinance:$scope.contractFinance,
-        };
-        resolve = {
-            parm: function () {
-                return parm;
-            },
-            content: function () {
-                return '生成合同';
-            },
-        };
-        var modalInstance = Modal.modal(url, ctrlName, resolve, function (result) {
-            $scope.init_data();
-        }, function () {
-
-        });
     }    
 
     $scope.delFinanceFlow = function (id){
@@ -247,6 +165,8 @@ angular.module('sbAdminApp').controller('ContractDetailListCtrl', ['$rootScope',
     }
 
     $scope.queryFinanceFlowList = function(){
+        var par = {}
+        par = {id:id}
         Init.iwbhttp('/car/queryFinanceFlowList', par, function (data, header, config, status) {
             if(data.resFlag == '0'){
                 $scope.financeFlowList = data.dataList;
@@ -256,10 +176,10 @@ angular.module('sbAdminApp').controller('ContractDetailListCtrl', ['$rootScope',
     }
 
     $scope.openCarTable = function (){
-        url = 'views/dashboard/car/carTableModal.html';
-        ctrlName = 'CarTableModalCtrl';
+        url = 'views/dashboard/car/carTableReplaceModal.html';
+        ctrlName = 'CarTableReplaceModalCtrl';
         var parm = {
-            id:$scope.contract.ID,
+            id:obj.ID,
         };
         resolve = {
             parm: function () {
@@ -299,31 +219,9 @@ angular.module('sbAdminApp').controller('ContractDetailListCtrl', ['$rootScope',
         });
     } 
 
-    $scope.openCarTableRead = function (){
-        url = 'views/dashboard/car/carTableReadModal.html';
-        ctrlName = 'CarTableReadModalCtrl';
-        var parm = {
-            id:$scope.contract.ID,
-        };
-        resolve = {
-            parm: function () {
-                return parm;
-            },
-            content: function () {
-                return '合同内车辆列表';
-            },
-        };
-        var modalInstance = Modal.modal(url, ctrlName, resolve, function (result) {
-            if(angular.equals("succeed",result)){
-            }
-        }, function () {
-
-        });
-    }  
-
     //返回
     $scope.back = function(){
-        $state.go("dashboard.contractIndex.contractList");
+        $state.go("dashboard.replaceIndex.replaceList");
     }
 
     //提示modal弹框

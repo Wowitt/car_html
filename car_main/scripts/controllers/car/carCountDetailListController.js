@@ -27,7 +27,7 @@ angular.module('sbAdminApp').controller('CarCountDetailListCtrl', ['$scope','Ini
                 "data": $scope.appData,
                 "columns": [
                     {
-                        "data": "planName"
+                        "data": "PLATE_NUM"
                     },
                     {
                         "data": "fieldName"
@@ -58,7 +58,7 @@ angular.module('sbAdminApp').controller('CarCountDetailListCtrl', ['$scope','Ini
                 "pagingType": "full_numbers",
                 "columnDefs": [
                     {
-                        searchable: false,
+                        searchable: true,
                         targets: 0
                     }
                 ]

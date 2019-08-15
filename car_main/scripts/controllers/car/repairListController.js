@@ -41,7 +41,7 @@ angular.module('sbAdminApp').controller('RepairListCtrl', ['$scope','Init','Moda
                 "data": "SALE_USERNAME"
             },
             {
-                "data": "RE_DESC"
+                "data": "MAINTENANCE_TYPE"
             },
             {
                 "data": "begindate"

@@ -1,5 +1,5 @@
 'use strict';
-angular.module('sbAdminApp').controller('YearchecklistCtrl', ['$scope','Init','Modal','$state','CheckBrowser','CheckParam', function ($scope,Init,Modal,$state,CheckBrowser,CheckParam) {
+angular.module('sbAdminApp').controller('RepairFlowListCtrl', ['$scope','Init','Modal','$state','CheckBrowser','CheckParam', function ($scope,Init,Modal,$state,CheckBrowser,CheckParam) {
     CheckBrowser.check();
     $.extend( $.fn.dataTable.defaults, {
         searching: true,
@@ -32,29 +32,36 @@ angular.module('sbAdminApp').controller('YearchecklistCtrl', ['$scope','Init','M
                 "data": "ID"
             },
             {
-                "data": "PLATE_NUM"
+                "data": "NAME"
             },
             {
-                "data": "FRAME_NUMBER"
+                "data": "SUPPLIER"
             },
             {
-                "data": "DRIVER_YEAR",
-                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                    $(nTd).html("<input value='"+sData+"'>");
-                }
+                "data": "COST_PRICE"
             },
             {
-                "data": "DRIVER_MONTH"
+                "data": "SALE_PRICE"
             },
             {
-                "data": "DRIVER_DATE"
+                "data": "NUM"
+            },
+            {
+                "data": "direction"
+            },
+            {
+                "data": "showdate"
             },
             {
                 "class": "mytable-center",
                 "targets": -1,
                 "data": null,
                 "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                    $(nTd).html("<div class='btn-group-vertical'><button type='button' class='btn btn-primary btn-sm dropdown-toggle' data-toggle='dropdown' id='a_check'>保存</button></div>");
+                    if(sData.direction == '入'){
+                        $(nTd).html("<div class='btn-group-vertical'><button type='button' class='btn btn-primary btn-sm dropdown-toggle' data-toggle='dropdown' id='a_check'>查看</button></div>");
+                    }else{
+                        $(nTd).html("")
+                    }
                 }
             }
         ],
@@ -66,7 +73,7 @@ angular.module('sbAdminApp').controller('YearchecklistCtrl', ['$scope','Init','M
                 $scope.searchContent = table.search();
             }
             $scope.param.searchContent = CheckParam.checkSql($scope.searchContent);
-            Init.iwbhttp('/car/carListForYearCheck', $scope.param, function(data,header,config,status){
+            Init.iwbhttp('/car/repairFlowList', $scope.param, function(data,header,config,status){
                 var returnData = {};
                 if(data.resFlag == 0){
                     returnData.recordsTotal = data.totalRow;//返回数据全部记录
@@ -109,30 +116,22 @@ angular.module('sbAdminApp').controller('YearchecklistCtrl', ['$scope','Init','M
     //查看详情
     $('#repairTable tbody').on('click', '#a_check', function () {
         var row = table.row($(this).parents('tr'));
-        console.log($(row.node()).find("input").val())
-        var input_val = $(row.node()).find("input").val()
         var data = row.data();
-        var param = {}
-        param.ID = data.ID
-        param.PLATE_NUM = data.PLATE_NUM
-        param.ENGINE_NUMBER = data.ENGINE_NUMBER
-        param.DRIVER_YEAR = input_val
-        Init.iwbhttp('/car/updateCarDriverYear', {obj:param}, function(data,header,config,status){
-            if(data.resFlag == 0){
-                $scope.open(data.msg);
-            }else{
-                $scope.open(data.msg);
-            }
-        },function(data,header,config,status){
+        var flowId = data.ID;
+        $state.go("dashboard.repairFlowIndex.repairFlowDetailList",
+        {
+            "flowId":flowId,
+            "ifAdd":"1",
+            "from":"dashboard.repairFlowIndex.repairFlowList"
         });
     });
 
     $scope.add = function(){
-        $state.go("dashboard.repairIndex.repairDetailList",
+        $state.go("dashboard.repairFlowIndex.repairFlowDetailList",
         {
             "repairId":"",
             "ifAdd":"0",
-            "from":"dashboard.planIndex.planList"
+            "from":"dashboard.repairFlowIndex.repairFlowList"
         });
     }
 

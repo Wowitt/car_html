@@ -14,12 +14,6 @@
                 <th>钥匙</th>
                 <th>保险</th>
                 <th>年检</th>
-                <th>充电枪</th>
-                <th>工具包</th>
-                <th>三脚架</th>
-                <th>灭火器</th>
-                <th>首保</th>
-                <th>车身广告</th>
             </tr>
             <tr ng-repeat="x in dataList">
                 <th class="">{{x.PLATE_NUM}}</th>
@@ -30,16 +24,11 @@
                 <th class=""><input type='checkbox' ng-model="x.CAR_KEY" ><input type='number' ng-model="x.CAR_KEY_NUM" style="margin-left:5px;width:30px" >把</th>
                 <th class=""><input type='checkbox' ng-model="x.INSURANCE" ></th>
                 <th class=""><input type='checkbox' ng-model="x.YEAR_CHECK_FLAG" ></th>
-                <th class=""><input type='checkbox' ng-model="x.CHARGE_GUN" ></th>
-                <th class=""><input type='checkbox' ng-model="x.TOOL_KIT" ></th>
-                <th class=""><input type='checkbox' ng-model="x.TRIPOD" ></th>
-                <th class=""><input type='checkbox' ng-model="x.FIRE_EXTINGUISHER" ></th>
-                <th class=""><input type='checkbox' ng-model="x.MAINTENANCE" ></th>
-                <th class=""><input type='checkbox' ng-model="x.AD" ></th>
             </tr>
         </table>
     </div>
     <div class="modal-footer">
+        <button type="button" class="btn btn-primary" ng-click="save()" id="sureBtn">保存</button>
         <button type="button" class="btn btn-default" ng-click="cancel()">关闭</button>
     </div>
 </div>

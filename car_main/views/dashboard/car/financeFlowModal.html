@@ -19,6 +19,7 @@
                         <option value="订金">订金</option>
                         <option value="押金">押金</option>
                         <option value="本期付款">本期付款</option>
+                        <option value="违章押金">违章押金</option>
                     </select>
                 </div>
             </div>
@@ -37,11 +38,21 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">付款方式</label>
+                <label class="col-sm-2 control-label">收款方</label>
                 <div class="col-sm-5">
-                    <select  ng-model="financeFlow.TYPE"  class="form-control" >
+                    <!-- <select  ng-model="financeFlow.TYPE"  class="form-control" >
                         <option value="">请选择</option>
                         <option ng-repeat="item in payTypeList" value="{{item.val}}">{{item.name}}</option>
+                    </select> -->
+                    <select ng-model="companyModeSelected" ng-options="x.NAME for x in companyModeList"></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">收款方式</label>
+                <div class="col-sm-5">
+                    <select  ng-model="financeFlow.RECEIVER_PayTitle"  class="form-control" >
+                        <option value="">请选择</option>
+                        <option ng-repeat="item in companyModeSelected.sonList" value="{{item.PayTitle}}">{{item.PayTitle}}</option>
                     </select>
                 </div>
             </div>

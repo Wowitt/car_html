@@ -37,6 +37,8 @@ angular.module('sbAdminApp')
 				Init.iwbhttp('/car/getStatistics', par, function (data, header, config, status) {
 					if (angular.equals("0", data.resFlag)) {
 						$scope.carCount = data.carCount;
+						$scope.componentCount = data.componentCount;
+						// if(data.agreementNumI >= 0){
 						// if(data.agreementNumI >= 0){
 						// 	$scope.agreementFlagI = true;
 						// 	$scope.agreementNumI = data.agreementNumI;

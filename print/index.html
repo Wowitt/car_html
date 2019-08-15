@@ -53,7 +53,8 @@
                     <div style="margin-top:5px;" id="saleUserName">销售:xxx</div>
                 </div>
                 <div style="display:flex;flex-direction: column;justify-content:flex-end;">
-                    <div id="begindate">进场时间:xxx</div>
+                    <div id="username">制单员:xxx</div>
+                    <div style="margin-top:5px;" id="begindate">进场时间:xxx</div>
                     <div style="margin-top:5px;" id="repairId">工单号:xxx</div>
                 </div>
             </div>
@@ -88,12 +89,13 @@ function getQueryVariable(variable)
 }
 ;(function(window,undefined){
     document.getElementById("plateNum").innerText = "牌照号:"+decodeURI(getQueryVariable('plateNum'));
-    document.getElementById("engineNumber").innerText = "发动机号:"+decodeURI(getQueryVariable('engineNumber'));
+    document.getElementById("engineNumber").innerText = "车架号:"+decodeURI(getQueryVariable('FRAME_NUMBER'));
     document.getElementById("statusname").innerText = "状态:"+decodeURI(getQueryVariable('statusname'));
     document.getElementById("saleUserName").innerText = "销售:"+decodeURI(getQueryVariable('saleUserName'));
     document.getElementById("repairId").innerText = "工单号:"+decodeURI(getQueryVariable('repairId'));
-    document.getElementById("begindate").innerText = "销售:"+getQueryVariable('begindate').replace("%20"," ");
-    var row = 1+parseInt(getQueryVariable('row'))
+    document.getElementById("begindate").innerText = "进场时间:"+getQueryVariable('begindate').replace("%20"," ");
+    document.getElementById("username").innerText = "制单员:"+decodeURI(getQueryVariable('username'));
+    var row = 2+parseInt(getQueryVariable('row'))
     var tableNode = document.getElementById('tableId');
     var str = ""
     for(var x=0;x<row;x++){
@@ -106,7 +108,7 @@ function getQueryVariable(variable)
         }
         else if(x == 1){          
             str += "<th>零件名称</th><th>类型</th><th>条码</th><th>单价</th><th>单位</th><th>数量</th>"
-        }else if(x < row -1){
+        }else if(x < row -2){
             var index = x
             console.log(index)
             str += "<td>"+decodeURI(getQueryVariable('cname'+index))+"</td>"
@@ -115,11 +117,16 @@ function getQueryVariable(variable)
             str += "<td>"+decodeURI(getQueryVariable('SALE_PRICE'+index))+"</td>"
             str += "<td>"+decodeURI(getQueryVariable('UNIT'+index))+"</td>"
             str += "<td>"+decodeURI(getQueryVariable('NUM'+index))+"</td>"
-        }else{
+        }else if(x < row -1){
             for(var y=0;y<1;y++){
                 str += "<td colspan='6' style='text-align:left;'>维修描述:"+decodeURI(getQueryVariable('desc'))+"</td>"
             }
+        }else{
+            for(var y=0;y<1;y++){
+                str += "<td colspan='6' style='text-align:left;'>维修报道:</td>"
+            }    
         }
+        
         str += "</tr>"
     }
     tableNode.innerHTML = str

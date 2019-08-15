@@ -8,9 +8,9 @@
     <!-- /.row -->
     <div class="row" ng-show="taskFlag">
         
-        <stats number="{{taskNum}}" comments="条待办事项！" colour="primary" type="comments" goto="dashboard.unfinishedTaskIndex.unfinishedTaskList" ng-click="goto();"></stats>
-        <stats number="{{agreementNum}}" comments="条待确认处置协议！" colour="yellow" type="support" goto="dashboard.agreementIndexCz.agreementListCz" ng-show="agreementFlag"></stats>
-        <stats number="{{forgetPwdNum}}" comments="条忘记密码申请！" colour="green" type="support" goto="dashboard.forgetPwdApplyIndex.forgetPwdApplyList" ng-show="forgetPwdFlag"></stats>
+        <stats number="{{contractNum}}" comments="条合同信息！" colour="primary"  type="support" goto="dashboard.contractIndex" ng-click="goto();"></stats>
+        <stats number="{{repairNum}}" comments="条维修信息！" colour="yellow" type="support" goto="dashboard.repairIndex" ng-click="goto();"></stats>
+        <stats number="{{breakrulesNum}}" comments="条违章记录！" colour="green" type="support" goto="dashboard.breakrulesListIndex" ng-click="goto();"></stats>
         <div class="col-lg-3 col-md-6 ng-isolate-scope" number="{{unSubmitPlanNum}}" comments="条未提交转移计划！" colour="red" type="comments" goto="#" ng-show="unSubmitPlanFlag">
             <div class="panel panel-red">
                 <div class="panel-heading">
