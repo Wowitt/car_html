@@ -1,5 +1,5 @@
 'use strict';
-angular.module('sbAdminApp').controller('ReplaceListCtrl', ['$scope','Init','Modal','$state','CheckBrowser','CheckParam', function ($scope,Init,Modal,$state,CheckBrowser,CheckParam) {
+angular.module('sbAdminApp').controller('AppOrderListCtrl', ['$scope','Init','Modal','$state','CheckBrowser','CheckParam', function ($scope,Init,Modal,$state,CheckBrowser,CheckParam) {
     CheckBrowser.check();
     $.extend( $.fn.dataTable.defaults, {
         searching: true,
@@ -29,24 +29,47 @@ angular.module('sbAdminApp').controller('ReplaceListCtrl', ['$scope','Init','Mod
         "serverSide": true,
         "columns": [
             {
-                "visible": false,
                 "data": "ID"
             },
             {
-                "data": "CO_ID"
+                "data": "USER_NAME"
             },
             {
-                "data": "PLATE_NUM_ORI"
+                "data": "USER_TEL"
             },
             {
-                "data": "PLATE_NUM"
+                "data": "CAR_manufacturers"
+            },
+            {
+                "data": "CAR_BRAND"
+            },
+            {
+                "data": "CAR_BRANDDESC"
+            },
+            {
+                "mDataProp": "STATUS",
+                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                    if(sData == 1)
+                    {
+                        $(nTd).html("已生成");
+                    }else if(sData == 0)
+                    {
+                        $(nTd).html("待生成");
+                    }else if(sData == 2)
+                    {
+                        $(nTd).html("删除");
+                    }
+                }
+            },
+            {
+                "data": "orderdate"
             },
             {
                 "class": "mytable-center",
                 "targets": -1,
                 "data": null,
                 "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                    $(nTd).html("<div ><button type='button' class='btn btn-primary btn-sm'  id='a_check'>替换车</button><button type='button' style='margin-left:10px;' class='btn btn-success btn-sm'  id='backCarId'>还车</button></div>");
+                    $(nTd).html("<div style='display:flex;justify-content:space-around'><button type='button' class='btn btn-primary btn-sm'  id='a_check'>租车流程</button><button type='button' class='btn btn-success btn-sm'  id='backCarId'>还车流程</button></div>");
                 }
             }
         ],
@@ -58,7 +81,7 @@ angular.module('sbAdminApp').controller('ReplaceListCtrl', ['$scope','Init','Mod
                 $scope.searchContent = table.search();
             }
             $scope.param.searchContent = CheckParam.checkSql($scope.searchContent);
-            Init.iwbhttp('/car/replaceCarList', $scope.param, function(data,header,config,status){
+            Init.iwbhttp('/car/appOrderList', $scope.param, function(data,header,config,status){
                 var returnData = {};
                 if(data.resFlag == 0){
                     returnData.recordsTotal = data.totalRow;//返回数据全部记录
@@ -105,25 +128,25 @@ angular.module('sbAdminApp').controller('ReplaceListCtrl', ['$scope','Init','Mod
     $('#contractTable tbody').on('click', '#a_check', function () {
         var row = table.row($(this).parents('tr'));
         var data = row.data();
-        $state.go("dashboard.replaceIndex.replaceDetailList",
+        var id = data.ID;
+        $state.go("dashboard.appOrderIndex.appOrderDetailList",
         {
-            "obj":data,
-            "from":"dashboard.replaceIndex.replaceList"
+            "id":id,
+            "from":"dashboard.appOrderIndex.appOrderList"
         });
     });
     //还车
     $('#contractTable tbody').on('click', '#backCarId', function () {
         var row = table.row($(this).parents('tr'));
         var data = row.data();
-        var id = data.CO_ID;
-        $state.go("dashboard.replaceIndex.replaceDetailForBackList",
+        var id = data.ID;
+        $state.go("dashboard.appOrderIndex.appOrderDetailForBackList",
         {
             "id":id,
-            "replaceId":data.ID,
-            "from":"dashboard.replaceIndex.replaceList"
+            "from":"dashboard.appOrderIndex.appOrderList"
         });
     });
-    
+
     //提示modal弹框
     $scope.open = function (content,data) {
         url = 'views/modal/promptModal.html';

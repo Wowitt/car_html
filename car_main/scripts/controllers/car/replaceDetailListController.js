@@ -102,6 +102,7 @@ angular.module('sbAdminApp').controller('ReplaceDetailListCtrl', ['$rootScope', 
         var par = {}
         par.replaceCarManage = {
             ID:obj.ID,
+            CO_ID:CO_ID,
             CARMANAGE_STATUS:"1"
         };
         var msg = "一旦提交无法再次修改,请确认?";
