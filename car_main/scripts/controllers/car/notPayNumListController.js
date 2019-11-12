@@ -1,11 +1,10 @@
 'use strict';
-angular.module('sbAdminApp').controller('CarListCtrl', ['$scope','Init','Modal','$state','CheckBrowser','CheckParam', function ($scope,Init,Modal,$state,CheckBrowser,CheckParam) {
+angular.module('sbAdminApp').controller('NotPayNumListCtrl', ['$scope','Init','Modal','$state','CheckBrowser','CheckParam', function ($scope,Init,Modal,$state,CheckBrowser,CheckParam) {
     CheckBrowser.check();
     $.extend( $.fn.dataTable.defaults, {
         searching: true,
         ordering:  true
     } );
-
     //弹框参数
     var resolve = {};
     var url = "";
@@ -25,49 +24,42 @@ angular.module('sbAdminApp').controller('CarListCtrl', ['$scope','Init','Modal',
     //table当前数据（页面数据页数等）
     $scope.pageData = "";
     $scope.param = {};
-    var table = $('#carTable').DataTable({
+    var table = $('#contractTable').DataTable({
         "serverSide": true,
         "columns": [
             {
-                "visible": false,
                 "data": "ID"
             },
             {
-                "data": "PLATE_NUM"
+                "mDataProp": "CU_TYPE",
+                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                    if(sData == "1")
+                    {
+                        $(nTd).html("公司");
+                    }else
+                    {
+                        $(nTd).html("个人");
+                    }
+                }
             },
             {
-                "data": "ENGINE_NUMBER"
+                "data": "CU_EP_NAME"
             },
             {
-                "data": "FRAME_NUMBER"
+                "data": "CU_NAME"
             },
             {
-                "data": "CAR_MODEL"
-            },
-            {
-                "data": "FIELD_NAME"
-            },
-            {
-                "data": "PURCHASE"
-            },
-            {
-                "data": "INVOICE"
+                "data": "TYPE"
             },
             {
                 "data": "STATUSNAME"
-            },
-            {
-                "data": "driverDate"
-            },
-            {
-                "data": "USER_NAME"
             },
             {
                 "class": "mytable-center",
                 "targets": -1,
                 "data": null,
                 "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                    $(nTd).html("<div class='btn-group-vertical'><button type='button' class='btn btn-primary btn-sm dropdown-toggle' data-toggle='dropdown' id='a_check'>操作</button></div>");
+                    $(nTd).html("<div style='display:flex;justify-content:space-around'><button type='button' class='btn btn-primary btn-sm'  id='a_check'>卖/租流程</button><button type='button' class='btn btn-success btn-sm'  id='backCarId'>还车流程</button></div>");
                 }
             }
         ],
@@ -79,12 +71,12 @@ angular.module('sbAdminApp').controller('CarListCtrl', ['$scope','Init','Modal',
                 $scope.searchContent = table.search();
             }
             $scope.param.searchContent = CheckParam.checkSql($scope.searchContent);
-            Init.iwbhttp('/car/carList', $scope.param, function(data,header,config,status){
+            Init.iwbhttp('/car/notPayNumList', $scope.param, function(data,header,config,status){
                 var returnData = {};
                 if(data.resFlag == 0){
                     returnData.recordsTotal = data.totalRow;//返回数据全部记录
                     returnData.recordsFiltered = data.totalRow;//后台不实现过滤功能，每次查询均视作全部结果
-                    returnData.data = data.carList;//返回的数据列表
+                    returnData.data = data.dataList;//返回的数据列表
                     callback(returnData);
                 }else{
                     $scope.open(data.msg);
@@ -116,14 +108,33 @@ angular.module('sbAdminApp').controller('CarListCtrl', ['$scope','Init','Modal',
         "fixedColumns":   {
             leftColumns:0,
             rightColumns: 1
-        }
+        },
+
+        "dom": 'Zlfrtip',
+
     });
 
-    //查看详情
-    $('#carTable tbody').on('click', '#a_check', function () {
+    //卖租车
+    $('#contractTable tbody').on('click', '#a_check', function () {
         var row = table.row($(this).parents('tr'));
         var data = row.data();
-        $scope.openCarModal(data)
+        var id = data.ID;
+        $state.go("dashboard.notPayNumIndex.contractDetailList",
+        {
+            "id":id,
+            "from":"dashboard.notPayNumIndex.notPayNumList"
+        });
+    });
+    //还车
+    $('#contractTable tbody').on('click', '#backCarId', function () {
+        var row = table.row($(this).parents('tr'));
+        var data = row.data();
+        var id = data.ID;
+        $state.go("dashboard.notPayNumIndex.contractDetailForBackList",
+        {
+            "id":id,
+            "from":"dashboard.notPayNumIndex.notPayNumList"
+        });
     });
 
     //提示modal弹框
@@ -144,40 +155,5 @@ angular.module('sbAdminApp').controller('CarListCtrl', ['$scope','Init','Modal',
 
         });
     };
-
-    $scope.openCarModal= function (p){
-        url = 'views/dashboard/car/carModal.html';
-        ctrlName = 'CarModalCtrl';
-        resolve = {
-            parm: function () {
-                return p;
-            },
-            content: function () {
-                return '合同内车辆列表';
-            },
-        };
-        var modalInstance = Modal.modal(url, ctrlName, resolve, function (result) {
-            if(angular.equals("succeed",result)){
-                $scope.postService()
-            }
-        }, function () {
-
-        });
-    }  
-
-    $scope.postService = function (){
-        Init.iwbhttp('/car/carList', $scope.param, function(data,header,config,status){
-            if(data.resFlag == 0){
-                for(var i = 0 ; i < data.carList.length ; i++)
-                {
-                    table.row(i).columns = data.carList[i];
-                }
-                table.draw();
-            }else{
-                $scope.open(data.msg);
-            }
-        },function(data,header,config,status){
-        });
-    }
 
 }]);

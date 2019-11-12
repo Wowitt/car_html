@@ -323,7 +323,8 @@ angular.module('sbAdminApp').controller('ContractDetailListCtrl', ['$rootScope',
 
     //返回
     $scope.back = function(){
-        $state.go("dashboard.contractIndex.contractList");
+        $state.go($stateParams.from);
+        // $state.go("dashboard.contractIndex.contractList");
     }
 
     //提示modal弹框

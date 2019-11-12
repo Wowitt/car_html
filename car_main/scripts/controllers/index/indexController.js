@@ -33,6 +33,7 @@ angular.module('sbAdminApp').controller('IndexCtrl', ['$scope','Init','Modal','l
     Init.iwbhttp('/admin/adminTaskNum', par, function (data, header, config, status) {
         if (angular.equals("0", data.resFlag)) {
             $scope.taskNum = data.taskNum;
+            $scope.notPayNum = data.notPayNum;
             $scope.contractNum = data.contractNum
             $scope.repairNum = data.repairNum
             $scope.breakrulesNum = data.breakrulesNum

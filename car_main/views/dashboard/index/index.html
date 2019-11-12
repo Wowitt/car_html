@@ -8,6 +8,7 @@
     <!-- /.row -->
     <div class="row" ng-show="taskFlag">
         
+        <stats number="{{notPayNum}}" comments="条到期未还款！" colour="red"  type="support" goto="dashboard.notPayNumIndex" ng-click="goto();"></stats>
         <stats number="{{contractNum}}" comments="条合同信息！" colour="primary"  type="support" goto="dashboard.contractIndex" ng-click="goto();"></stats>
         <stats number="{{repairNum}}" comments="条维修信息！" colour="yellow" type="support" goto="dashboard.repairIndex" ng-click="goto();"></stats>
         <stats number="{{breakrulesNum}}" comments="条违章记录！" colour="green" type="support" goto="dashboard.breakrulesListIndex" ng-click="goto();"></stats>

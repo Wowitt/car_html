@@ -214,7 +214,7 @@ angular.module('sbAdminApp').controller('ReplaceDetailForBackListCtrl', ['$rootS
         });
     }
     $scope.updateReplace = function() {
-        Init.iwbhttp("/car/updateContractForBack", {id:$stateParams.replaceId}, function (data, header, config, status) {
+        Init.iwbhttp("/car/updateReplaceForBack", {id:$stateParams.replaceId}, function (data, header, config, status) {
 			if(data.resFlag == '0'){
                 $scope.contractBack.BACK_STATUS = '3'
                 $scope.open(data.msg)
